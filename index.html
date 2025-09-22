@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Soumis Ronan le Bouffon</title>
+  <style>
+    body {
+      font-family: 'Comic Sans MS', cursive, sans-serif;
+      background: repeating-linear-gradient(
+        45deg,
+        #f59e0b 0,
+        #f59e0b 25%,
+        #3b82f6 25%,
+        #3b82f6 50%,
+        #10b981 50%,
+        #10b981 75%,
+        #ef4444 75%,
+        #ef4444 100%
+      );
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      margin: 0;
+      color: #111;
+    }
+    .container {
+      background: white;
+      border-radius: 20px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+      padding: 20px;
+      max-width: 500px;
+      width: 100%;
+      text-align: center;
+    }
+    h1 {
+      font-size: 1.8rem;
+      margin-bottom: 10px;
+      color: #ef4444;
+    }
+    .buttons button {
+      flex: 1;
+      padding: 12px;
+      border-radius: 12px;
+      border: 2px solid #111;
+      cursor: pointer;
+      font-weight: bold;
+      margin: 5px;
+    }
+    .message-box {
+      border: 2px dashed #111;
+      background: #fef3c7;
+      padding: 12px;
+      border-radius: 12px;
+      margin-bottom: 20px;
+    }
+    .actions button {
+      padding: 10px 15px;
+      border-radius: 8px;
+      font-size: 14px;
+      display: inline-block;
+      margin: 5px;
+      background: #25d366;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+    .joke-button {
+      background: #f59e0b;
+    }
+    input[type='text'] {
+      width: 80%;
+      padding: 8px;
+      margin: 10px 0;
+      border: 2px solid #111;
+      border-radius: 8px;
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Soumis Ronan le Bouffon</h1>
+    <p>Choisis une position et envoie le message sur WhatsApp.</p>
+    <p><strong>Ronan devra envoyer une photo de lui-même dans la position souhaitée.</strong></p>
+
+    <div class="buttons">
+      <button onclick="setPosition('face')" style="background:#ef4444;color:white;">Face</button>
+      <button onclick="setPosition('gauche')" style="background:#3b82f6;color:white;">Gauche</button>
+      <button onclick="setPosition('droite')" style="background:#10b981;color:white;">Droite</button>
+    </div>
+
+    <div class="message-box">
+      <div><strong>Message pré-écrit :</strong></div>
+      <div id="message">Met la tête à face</div>
+    </div>
+
+    <div>
+      <input type="text" id="customMessage" placeholder="Écris un message personnalisé pour Ronan">
+    </div>
+
+    <div class="actions">
+      <button onclick="sendWhatsApp()">Envoyer sur WhatsApp</button>
+      <button class="joke-button" onclick="requestJoke()">Demander une blague à Ronan</button>
+    </div>
+  </div>
+
+  <script>
+    const TARGET_WHATSAPP_NUMBER = "33781937228"; // +33 7 81 93 72 28
+
+    let position = "face";
+
+    function messageFor(pos) {
+      return `Met la tête à ${pos}`;
+    }
+
+    function setPosition(pos) {
+      position = pos;
+      document.getElementById("message").innerText = messageFor(pos);
+    }
+
+    function sendWhatsApp() {
+      let customText = document.getElementById('customMessage').value;
+      let textToSend = customText ? encodeURIComponent(customText) : encodeURIComponent(messageFor(position));
+      window.open(`https://api.whatsapp.com/send?phone=${TARGET_WHATSAPP_NUMBER}&text=${textToSend}`, '_blank');
+      alert("Message prêt à être envoyé sur WhatsApp : " + decodeURIComponent(textToSend) + "\nRonan devra envoyer une photo dans cette position.");
+    }
+
+    function requestJoke() {
+      const jokeMessage = encodeURIComponent("Salut Ronan, raconte-moi une blague ! 🤡");
+      window.open(`https://api.whatsapp.com/send?phone=${TARGET_WHATSAPP_NUMBER}&text=${jokeMessage}`, '_blank');
+      alert("Demande de blague envoyée à Ronan !");
+    }
+  </script>
+</body>
+</html>
