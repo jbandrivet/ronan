@@ -39,14 +39,25 @@
       margin-bottom: 10px;
       color: #ef4444;
     }
+    .buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin: 20px 0;
+    }
     .buttons button {
       flex: 1;
+      min-width: 120px;
       padding: 12px;
       border-radius: 12px;
       border: 2px solid #111;
       cursor: pointer;
       font-weight: bold;
-      margin: 5px;
+      font-size: 14px;
+      transition: transform 0.2s;
+    }
+    .buttons button:hover {
+      transform: scale(1.05);
     }
     .message-box {
       border: 2px dashed #111;
@@ -54,24 +65,45 @@
       padding: 12px;
       border-radius: 12px;
       margin-bottom: 20px;
+      min-height: 50px;
+    }
+    .message-box strong {
+      display: block;
+      margin-bottom: 8px;
+    }
+    #message {
+      font-size: 16px;
+      font-weight: bold;
+      color: #111;
+    }
+    .actions {
+      margin-top: 20px;
     }
     .actions button {
-      padding: 10px 15px;
+      padding: 12px 20px;
       border-radius: 8px;
       font-size: 14px;
+      font-weight: bold;
       display: inline-block;
       margin: 5px;
+      border: 2px solid #111;
+      cursor: pointer;
+      transition: transform 0.2s;
+    }
+    .actions button:hover {
+      transform: scale(1.05);
+    }
+    .whatsapp-btn {
       background: #25d366;
       color: white;
-      border: none;
-      cursor: pointer;
     }
     .joke-button {
       background: #f59e0b;
+      color: white;
     }
     input[type='text'] {
-      width: 80%;
-      padding: 8px;
+      width: 85%;
+      padding: 10px;
       margin: 10px 0;
       border: 2px solid #111;
       border-radius: 8px;
@@ -81,35 +113,37 @@
 </head>
 <body>
   <div class="container">
-    <h1>Soumis Ronan le Bouffon</h1>
+    <h1>🤡 Soumis Ronan le Bouffon 🤡</h1>
     <p>Choisis une position et envoie le message sur WhatsApp.</p>
     <p><strong>Ronan devra envoyer une photo de lui-même dans la position souhaitée.</strong></p>
-
+    
     <div class="buttons">
       <button onclick="setPosition('face')" style="background:#ef4444;color:white;">Face</button>
       <button onclick="setPosition('gauche')" style="background:#3b82f6;color:white;">Gauche</button>
       <button onclick="setPosition('droite')" style="background:#10b981;color:white;">Droite</button>
+      <button onclick="setPosition('arriere')" style="background:#8b5cf6;color:white;">Arrière</button>
+      <button onclick="randomPosition()" style="background:#ec4899;color:white;">🎲 Aléatoire</button>
     </div>
-
+    
     <div class="message-box">
-      <div><strong>Message pré-écrit :</strong></div>
+      <strong>Message pré-écrit :</strong>
       <div id="message">Met la tête à face</div>
     </div>
-
+    
     <div>
       <input type="text" id="customMessage" placeholder="Écris un message personnalisé pour Ronan">
     </div>
-
+    
     <div class="actions">
-      <button onclick="sendWhatsApp()">Envoyer sur WhatsApp</button>
-      <button class="joke-button" onclick="requestJoke()">Demander une blague à Ronan</button>
+      <button class="whatsapp-btn" onclick="sendWhatsApp()">📱 Envoyer sur WhatsApp</button>
+      <button class="joke-button" onclick="requestJoke()">😂 Demander une blague</button>
     </div>
   </div>
 
   <script>
-    const TARGET_WHATSAPP_NUMBER = "33781937228"; // +33 7 81 93 72 28
-
+    const TARGET_WHATSAPP_NUMBER = "33781937228";
     let position = "face";
+    const positions = ["face", "gauche", "droite", "arriere"];
 
     function messageFor(pos) {
       return `Met la tête à ${pos}`;
@@ -120,17 +154,23 @@
       document.getElementById("message").innerText = messageFor(pos);
     }
 
+    function randomPosition() {
+      const randomPos = positions[Math.floor(Math.random() * positions.length)];
+      setPosition(randomPos);
+      alert("🎲 Position aléatoire choisie : " + randomPos + " !");
+    }
+
     function sendWhatsApp() {
       let customText = document.getElementById('customMessage').value;
       let textToSend = customText ? encodeURIComponent(customText) : encodeURIComponent(messageFor(position));
       window.open(`https://api.whatsapp.com/send?phone=${TARGET_WHATSAPP_NUMBER}&text=${textToSend}`, '_blank');
-      alert("Message prêt à être envoyé sur WhatsApp : " + decodeURIComponent(textToSend) + "\nRonan devra envoyer une photo dans cette position.");
+      alert("📱 Message prêt à être envoyé sur WhatsApp : " + decodeURIComponent(textToSend) + "\n\n🤡 Ronan devra envoyer une photo dans cette position !");
     }
 
     function requestJoke() {
       const jokeMessage = encodeURIComponent("Salut Ronan, raconte-moi une blague ! 🤡");
       window.open(`https://api.whatsapp.com/send?phone=${TARGET_WHATSAPP_NUMBER}&text=${jokeMessage}`, '_blank');
-      alert("Demande de blague envoyée à Ronan !");
+      alert("😂 Demande de blague envoyée à Ronan !");
     }
   </script>
 </body>
