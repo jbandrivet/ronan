@@ -144,6 +144,15 @@
     const TARGET_WHATSAPP_NUMBER = "33781937228";
     let position = "face";
     const positions = ["face", "gauche", "droite", "arriere"];
+    
+    const randomVariations = [
+      "arrière profil gauche",
+      "arrière profil droit",
+      "arrière tourne ta tête à gauche",
+      "arrière tourne ta tête à droite",
+      "arrière tourne ta tête face",
+      "arrière simple"
+    ];
 
     function messageFor(pos) {
       return `Met la tête à ${pos}`;
@@ -155,8 +164,9 @@
     }
 
     function randomPosition() {
-      const randomPos = positions[Math.floor(Math.random() * positions.length)];
-      setPosition(randomPos);
+      const randomPos = randomVariations[Math.floor(Math.random() * randomVariations.length)];
+      position = randomPos;
+      document.getElementById("message").innerText = `Met la tête à ${randomPos}`;
       alert("🎲 Position aléatoire choisie : " + randomPos + " !");
     }
 
