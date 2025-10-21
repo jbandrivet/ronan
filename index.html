@@ -1,3 +1,5 @@
+
+
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -119,16 +121,6 @@
       border-radius: 8px;
       font-size: 14px;
     }
-    textarea {
-      width: 85%;
-      height: 150px;
-      padding: 10px;
-      margin: 10px 0;
-      border: 2px solid #111;
-      border-radius: 8px;
-      font-size: 14px;
-      font-family: monospace;
-    }
     .note {
       background: #dbeafe;
       border-left: 4px solid #3b82f6;
@@ -222,7 +214,7 @@
         
         <div class="note">
           <strong>📝 Comment ça marche ?</strong>
-          Ronan doit taper EXACTEMENT le texte généré avec toutes les onomatopées dégoûtantes, numéroté ligne par ligne. S'il fait UNE SEULE erreur de frappe, tout est effacé et il doit TOUT recommencer à zéro ! Une fois réussi, il pourra envoyer le message sur WhatsApp pour prouver qu'il a réussi le défi. C'est un jeu de patience et de précision ! 😈
+          Tu choisis un animal ou une nourriture dégoûtante avec ses onomatopées. Le système génère un lien que tu envoies à Ronan sur WhatsApp. Ronan devra alors taper EXACTEMENT les onomatopées le nombre de fois demandé. S'il fait UNE SEULE erreur, tout est effacé et il recommence à zéro ! 😈
         </div>
 
         <div class="tabs">
@@ -271,7 +263,7 @@
           <div id="challengeAnimal" style="display:none; margin-top:20px;">
             <div class="message-box" style="background:#fef3c7;">
               <p><strong>Lien du défi généré :</strong></p>
-              <input type="text" id="linkAnimal" readonly style="margin-top:8px; cursor:pointer;">
+              <input type="text" id="linkAnimal" readonly style="margin-top:8px; cursor:pointer; width:95%;">
             </div>
             <div class="actions">
               <button id="copyLinkAnimal" style="background:#8b5cf6;color:white;">📋 Copier le lien</button>
@@ -321,7 +313,7 @@
           <div id="challengeFood" style="display:none; margin-top:20px;">
             <div class="message-box" style="background:#fef3c7;">
               <p><strong>Lien du défi généré :</strong></p>
-              <input type="text" id="linkFood" readonly style="margin-top:8px; cursor:pointer;">
+              <input type="text" id="linkFood" readonly style="margin-top:8px; cursor:pointer; width:95%;">
             </div>
             <div class="actions">
               <button id="copyLinkFood" style="background:#8b5cf6;color:white;">📋 Copier le lien</button>
@@ -347,9 +339,6 @@
       "arrière tourne ta tête face",
       "arrière simple"
     ];
-
-    let challengeTextAnimal = "";
-    let challengeTextFood = "";
 
     // SWITCH ONGLET PRINCIPAL
     function switchMainTab(tab) {
@@ -423,8 +412,8 @@
       };
       
       const encoded = btoa(JSON.stringify(challengeData));
-      const baseUrl = window.location.origin + window.location.pathname.replace('index.html', '') + 'punition.html';
-      const link = `${baseUrl}?challenge=${encoded}`;
+      const baseUrl = window.location.origin + window.location.pathname.replace('index.html', '').replace(/\/$/, '');
+      const link = `${baseUrl}/punition.html?challenge=${encoded}`;
       
       document.getElementById("linkAnimal").value = link;
       document.getElementById("challengeAnimal").style.display = "block";
@@ -463,8 +452,8 @@
       };
       
       const encoded = btoa(JSON.stringify(challengeData));
-      const baseUrl = window.location.origin + window.location.pathname.replace('index.html', '') + 'punition.html';
-      const link = `${baseUrl}?challenge=${encoded}`;
+      const baseUrl = window.location.origin + window.location.pathname.replace('index.html', '').replace(/\/$/, '');
+      const link = `${baseUrl}/punition.html?challenge=${encoded}`;
       
       document.getElementById("linkFood").value = link;
       document.getElementById("challengeFood").style.display = "block";
