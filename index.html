@@ -23,15 +23,19 @@
       align-items: center;
       min-height: 100vh;
       margin: 0;
+      padding: 20px;
       color: #111;
+    }
+    .main-container {
+      max-width: 900px;
+      width: 100%;
     }
     .container {
       background: white;
       border-radius: 20px;
       box-shadow: 0 4px 12px rgba(0,0,0,0.2);
       padding: 20px;
-      max-width: 500px;
-      width: 100%;
+      margin-bottom: 20px;
       text-align: center;
     }
     h1 {
@@ -39,11 +43,17 @@
       margin-bottom: 10px;
       color: #ef4444;
     }
+    h2 {
+      font-size: 1.4rem;
+      margin-bottom: 10px;
+      color: #3b82f6;
+    }
     .buttons {
       display: flex;
       flex-wrap: wrap;
       gap: 10px;
       margin: 20px 0;
+      justify-content: center;
     }
     .buttons button {
       flex: 1;
@@ -101,7 +111,7 @@
       background: #f59e0b;
       color: white;
     }
-    input[type='text'] {
+    input[type='text'], input[type='number'], select {
       width: 85%;
       padding: 10px;
       margin: 10px 0;
@@ -109,35 +119,219 @@
       border-radius: 8px;
       font-size: 14px;
     }
+    textarea {
+      width: 85%;
+      height: 150px;
+      padding: 10px;
+      margin: 10px 0;
+      border: 2px solid #111;
+      border-radius: 8px;
+      font-size: 14px;
+      font-family: monospace;
+    }
+    .note {
+      background: #dbeafe;
+      border-left: 4px solid #3b82f6;
+      padding: 15px;
+      margin: 15px 0;
+      border-radius: 8px;
+      text-align: left;
+    }
+    .note strong {
+      color: #1e40af;
+      display: block;
+      margin-bottom: 8px;
+    }
+    .tabs {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 15px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    .tab {
+      padding: 10px 20px;
+      background: #e5e7eb;
+      border: 2px solid #111;
+      color: #111;
+      cursor: pointer;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: bold;
+      transition: all 0.2s;
+    }
+    .tab.active {
+      background: #3b82f6;
+      color: white;
+    }
+    .tab-content {
+      display: none;
+    }
+    .tab-content.active {
+      display: block;
+    }
   </style>
 </head>
 <body>
-  <div class="container">
-    <h1>🤡 Soumis Ronan le Bouffon 🤡</h1>
-    <p>Choisis une position et envoie le message sur WhatsApp.</p>
-    <p><strong>Ronan devra envoyer une photo de lui-même dans la position souhaitée.</strong></p>
+  <div class="main-container">
     
-    <div class="buttons">
-      <button onclick="setPosition('face')" style="background:#ef4444;color:white;">Face</button>
-      <button onclick="setPosition('gauche')" style="background:#3b82f6;color:white;">Gauche</button>
-      <button onclick="setPosition('droite')" style="background:#10b981;color:white;">Droite</button>
-      <button onclick="setPosition('arriere')" style="background:#8b5cf6;color:white;">Arrière</button>
-      <button onclick="randomPosition()" style="background:#ec4899;color:white;">🎲 Aléatoire</button>
+    <!-- ONGLETS PRINCIPAUX -->
+    <div class="container">
+      <h1>🤡 Soumis Ronan le Bouffon 🤡</h1>
+      <div class="tabs">
+        <button class="tab active" onclick="switchMainTab('positions')">📸 Positions</button>
+        <button class="tab" onclick="switchMainTab('repas')">🍽️ Repas de Ronan</button>
+      </div>
     </div>
-    
-    <div class="message-box">
-      <strong>Message pré-écrit :</strong>
-      <div id="message">Met la tête à face</div>
+
+    <!-- TAB POSITIONS -->
+    <div id="positions" class="tab-content active">
+      <div class="container">
+        <h2>Positions de la tête</h2>
+        <p>Choisis une position et envoie le message sur WhatsApp.</p>
+        <p><strong>Ronan devra envoyer une photo de lui-même dans la position souhaitée.</strong></p>
+        
+        <div class="buttons">
+          <button onclick="setPosition('face')" style="background:#ef4444;color:white;">Face</button>
+          <button onclick="setPosition('gauche')" style="background:#3b82f6;color:white;">Gauche</button>
+          <button onclick="setPosition('droite')" style="background:#10b981;color:white;">Droite</button>
+          <button onclick="setPosition('arriere')" style="background:#8b5cf6;color:white;">Arrière</button>
+          <button onclick="randomPosition()" style="background:#ec4899;color:white;">🎲 Aléatoire</button>
+        </div>
+        
+        <div class="message-box">
+          <strong>Message pré-écrit :</strong>
+          <div id="message">Met la tête à face</div>
+        </div>
+        
+        <div>
+          <input type="text" id="customMessage" placeholder="Écris un message personnalisé pour Ronan">
+        </div>
+        
+        <div class="actions">
+          <button class="whatsapp-btn" onclick="sendWhatsApp()">📱 Envoyer sur WhatsApp</button>
+          <button class="joke-button" onclick="requestJoke()">😂 Demander une blague</button>
+        </div>
+      </div>
     </div>
-    
-    <div>
-      <input type="text" id="customMessage" placeholder="Écris un message personnalisé pour Ronan">
+
+    <!-- TAB REPAS DE RONAN -->
+    <div id="repas" class="tab-content">
+      <div class="container">
+        <h2>🤢 Les Repas de Ronan 🤢</h2>
+        
+        <div class="note">
+          <strong>📝 Comment ça marche ?</strong>
+          Ronan doit taper EXACTEMENT le texte généré avec toutes les onomatopées dégoûtantes, numéroté ligne par ligne. S'il fait UNE SEULE erreur de frappe, tout est effacé et il doit TOUT recommencer à zéro ! Une fois réussi, il pourra envoyer le message sur WhatsApp pour prouver qu'il a réussi le défi. C'est un jeu de patience et de précision ! 😈
+        </div>
+
+        <div class="tabs">
+          <button class="tab active" onclick="switchTab('animals')">🐌 Animaux</button>
+          <button class="tab" onclick="switchTab('food')">🍽️ Nourriture</button>
+        </div>
+
+        <!-- SOUS-TAB ANIMAUX -->
+        <div id="animals" class="tab-content active">
+          <h2 style="font-size:1.2rem;">Animaux Dégoûtants</h2>
+          <div>
+            <label for="animal"><strong>Choisir un animal :</strong></label>
+            <select id="animal">
+              <option value="sluuuurpp glouuuup schliiick">Limace géante africaine</option>
+              <option value="glop glop plouchhh schluuurrp">Ver marin perforateur de bois</option>
+              <option value="bzzzchhh plip plop sliiibber">Escargot baveux des marais</option>
+              <option value="squishhh gluuup gluuup frrrslip">Bigorneau visqueux</option>
+              <option value="schluuurp slibber plop schlick">Patelle gluante</option>
+              <option value="gloupsss plock blop blop">Bulot des fonds vaseux</option>
+              <option value="sllluuurrrrp chchch slibber glop">Moule verte invasive</option>
+              <option value="slip glchhh plopf schrrlick">Coquille Saint-Jacques</option>
+              <option value="plip schluuuup glibber slorrrrp">Liguie</option>
+              <option value="glibb sluuuurp schlick plop">Escargot de mer blanc</option>
+              <option value="crrrack pffshhh slibber glop">Mille-pattes géant africain</option>
+              <option value="schrrrk glup glup plip plop">Scolopendre venimeuse</option>
+              <option value="plock chhh slibber glop">Cloporte géant</option>
+              <option value="squishhh blop glurrrrp">Punaise d'eau géante</option>
+              <option value="crunchhh glup frrt schluurrp">Crabe araignée géant</option>
+              <option value="plop schrrp glibber fliiick">Crabe violoniste</option>
+              <option value="slup glib plop schluup">Crevette fantôme</option>
+              <option value="glub schhh plop slorrrrp">Larve de crabes ou homards</option>
+              <option value="squishhh glop blop plip">Tique gorgée de sang</option>
+              <option value="crlch sluuuurp blop frrrslip">Écrevisse américaine</option>
+            </select>
+          </div>
+
+          <div>
+            <label for="countAnimal"><strong>Nombre de répétitions :</strong></label>
+            <input type="number" id="countAnimal" min="1" max="50" value="5">
+          </div>
+
+          <div class="actions">
+            <button id="generateAnimal" style="background:#f59e0b;color:white;">Générer le défi</button>
+          </div>
+
+          <div id="challengeAnimal" style="display:none; margin-top:20px;">
+            <div class="message-box" style="background:#fef3c7;">
+              <p><strong>Lien du défi généré :</strong></p>
+              <input type="text" id="linkAnimal" readonly style="margin-top:8px; cursor:pointer;">
+            </div>
+            <div class="actions">
+              <button id="copyLinkAnimal" style="background:#8b5cf6;color:white;">📋 Copier le lien</button>
+              <button id="whatsappLinkAnimal" style="background:#25d366;color:white;">📱 Envoyer sur WhatsApp</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- SOUS-TAB NOURRITURE -->
+        <div id="food" class="tab-content">
+          <h2 style="font-size:1.2rem;">Nourritures Dégoûtantes</h2>
+          <div>
+            <label for="foodItem"><strong>Choisir une nourriture :</strong></label>
+            <select id="foodItem">
+              <option value="miam slurrrrp crunch glop">Œufs de cent ans pourris</option>
+              <option value="gloub schluup beurk plop">Fromage au lait cru moisi</option>
+              <option value="squishhh munch glurrp slibber">Haggis écossais baveux</option>
+              <option value="schlop gloup miam crrrunch">Durian fermenté puant</option>
+              <option value="slurp glibb crunch beurkkk">Nattō japonais gluant</option>
+              <option value="plop munch schliiick gloup">Casu marzu italien grouillant</option>
+              <option value="gloop sliiibber miam crunch">Surströmming suédois pourri</option>
+              <option value="crunch sluuurp beurk glibber">Balut philippin croquant</option>
+              <option value="glibb plop munch schluup">Escamoles mexicaines visqueuses</option>
+              <option value="schlurp crunch glop beurkkk">Hákarl islandais ammoniaqué</option>
+              <option value="miam gloop slibber crrrack">Sannakji coréen vivant</option>
+              <option value="glup crunch beurk squishhh">Witchetty grubs australiennes</option>
+              <option value="schlick miam plop gluuup">Fugu japonais mortel</option>
+              <option value="crunch glibb slurp beurk">Stinkheads alaskiens fermentés</option>
+              <option value="glop munch schliiick plop">Lutefisk norvégien gélatineux</option>
+              <option value="sluuurp crrrack beurkkk glibber">Tarentule frite cambodgienne</option>
+              <option value="miam schlop gloup crunch">Cervelle de singe crue</option>
+              <option value="glibb plop slurrp beurk">Tête de mouton bouillie</option>
+              <option value="crunch gloop miam schluup">Grillons frits croustillants</option>
+              <option value="schlick glop beurkkk slibber">Soupe de sang coagulé</option>
+            </select>
+          </div>
+
+          <div>
+            <label for="countFood"><strong>Nombre de répétitions :</strong></label>
+            <input type="number" id="countFood" min="1" max="50" value="5">
+          </div>
+
+          <div class="actions">
+            <button id="generateFood" style="background:#f59e0b;color:white;">Générer le défi</button>
+          </div>
+
+          <div id="challengeFood" style="display:none; margin-top:20px;">
+            <div class="message-box" style="background:#fef3c7;">
+              <p><strong>Lien du défi généré :</strong></p>
+              <input type="text" id="linkFood" readonly style="margin-top:8px; cursor:pointer;">
+            </div>
+            <div class="actions">
+              <button id="copyLinkFood" style="background:#8b5cf6;color:white;">📋 Copier le lien</button>
+              <button id="whatsappLinkFood" style="background:#25d366;color:white;">📱 Envoyer sur WhatsApp</button>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
-    
-    <div class="actions">
-      <button class="whatsapp-btn" onclick="sendWhatsApp()">📱 Envoyer sur WhatsApp</button>
-      <button class="joke-button" onclick="requestJoke()">😂 Demander une blague</button>
-    </div>
+
   </div>
 
   <script>
@@ -154,6 +348,38 @@
       "arrière simple"
     ];
 
+    let challengeTextAnimal = "";
+    let challengeTextFood = "";
+
+    // SWITCH ONGLET PRINCIPAL
+    function switchMainTab(tab) {
+      document.querySelectorAll('.main-container > .container .tab').forEach(t => t.classList.remove('active'));
+      document.querySelectorAll('.main-container > .tab-content').forEach(c => c.classList.remove('active'));
+      
+      if(tab === 'positions') {
+        document.querySelector('.main-container > .container .tab:nth-child(1)').classList.add('active');
+        document.getElementById('positions').classList.add('active');
+      } else {
+        document.querySelector('.main-container > .container .tab:nth-child(2)').classList.add('active');
+        document.getElementById('repas').classList.add('active');
+      }
+    }
+
+    // SWITCH SOUS-ONGLET REPAS
+    function switchTab(tab) {
+      document.querySelectorAll('#repas .tabs .tab').forEach(t => t.classList.remove('active'));
+      document.querySelectorAll('#repas > .container > .tab-content').forEach(c => c.classList.remove('active'));
+      
+      if(tab === 'animals') {
+        document.querySelector('#repas .tabs .tab:nth-child(1)').classList.add('active');
+        document.getElementById('animals').classList.add('active');
+      } else {
+        document.querySelector('#repas .tabs .tab:nth-child(2)').classList.add('active');
+        document.getElementById('food').classList.add('active');
+      }
+    }
+
+    // POSITIONS
     function messageFor(pos) {
       return `Met la tête à ${pos}`;
     }
@@ -182,6 +408,86 @@
       window.open(`https://api.whatsapp.com/send?phone=${TARGET_WHATSAPP_NUMBER}&text=${jokeMessage}`, '_blank');
       alert("😂 Demande de blague envoyée à Ronan !");
     }
+
+    // ANIMAUX
+    document.getElementById("generateAnimal").addEventListener("click", function() {
+      const animal = document.getElementById("animal").value;
+      const animalName = document.getElementById("animal").selectedOptions[0].text;
+      const count = parseInt(document.getElementById("countAnimal").value);
+      
+      const challengeData = {
+        phrase: animal,
+        reps: count,
+        timeLimit: 0,
+        name: animalName
+      };
+      
+      const encoded = btoa(JSON.stringify(challengeData));
+      const baseUrl = window.location.origin + window.location.pathname.replace('index.html', '') + 'punition.html';
+      const link = `${baseUrl}?challenge=${encoded}`;
+      
+      document.getElementById("linkAnimal").value = link;
+      document.getElementById("challengeAnimal").style.display = "block";
+    });
+
+    document.getElementById("copyLinkAnimal").addEventListener("click", function() {
+      const link = document.getElementById("linkAnimal").value;
+      navigator.clipboard.writeText(link);
+      const btn = this;
+      const originalText = btn.textContent;
+      btn.textContent = '✅ Copié !';
+      setTimeout(() => { btn.textContent = originalText; }, 2000);
+    });
+
+    document.getElementById("whatsappLinkAnimal").addEventListener("click", function() {
+      const link = document.getElementById("linkAnimal").value;
+      const animal = document.getElementById("animal").value;
+      const animalName = document.getElementById("animal").selectedOptions[0].text;
+      const count = document.getElementById("countAnimal").value;
+      const message = `🤡 REPAS DE RONAN 🤡\n\n🐌 Animal: ${animalName}\n📝 Répétitions: ${count}×\n\n🎯 Onomatopées à recopier:\n"${animal}"\n\nClique sur le lien et tape EXACTEMENT cette phrase ${count} fois (une erreur = tout recommence à zéro!) :\n\n${link}`;
+      const encodedMessage = encodeURIComponent(message);
+      window.open(`https://api.whatsapp.com/send?phone=${TARGET_WHATSAPP_NUMBER}&text=${encodedMessage}`, '_blank');
+    });
+
+    // NOURRITURE
+    document.getElementById("generateFood").addEventListener("click", function() {
+      const food = document.getElementById("foodItem").value;
+      const foodName = document.getElementById("foodItem").selectedOptions[0].text;
+      const count = parseInt(document.getElementById("countFood").value);
+      
+      const challengeData = {
+        phrase: food,
+        reps: count,
+        timeLimit: 0,
+        name: foodName
+      };
+      
+      const encoded = btoa(JSON.stringify(challengeData));
+      const baseUrl = window.location.origin + window.location.pathname.replace('index.html', '') + 'punition.html';
+      const link = `${baseUrl}?challenge=${encoded}`;
+      
+      document.getElementById("linkFood").value = link;
+      document.getElementById("challengeFood").style.display = "block";
+    });
+
+    document.getElementById("copyLinkFood").addEventListener("click", function() {
+      const link = document.getElementById("linkFood").value;
+      navigator.clipboard.writeText(link);
+      const btn = this;
+      const originalText = btn.textContent;
+      btn.textContent = '✅ Copié !';
+      setTimeout(() => { btn.textContent = originalText; }, 2000);
+    });
+
+    document.getElementById("whatsappLinkFood").addEventListener("click", function() {
+      const link = document.getElementById("linkFood").value;
+      const food = document.getElementById("foodItem").value;
+      const foodName = document.getElementById("foodItem").selectedOptions[0].text;
+      const count = document.getElementById("countFood").value;
+      const message = `🤡 REPAS DE RONAN 🤡\n\n🍽️ Nourriture: ${foodName}\n📝 Répétitions: ${count}×\n\n🎯 Onomatopées à recopier:\n"${food}"\n\nClique sur le lien et tape EXACTEMENT cette phrase ${count} fois (une erreur = tout recommence à zéro!) :\n\n${link}`;
+      const encodedMessage = encodeURIComponent(message);
+      window.open(`https://api.whatsapp.com/send?phone=${TARGET_WHATSAPP_NUMBER}&text=${encodedMessage}`, '_blank');
+    });
   </script>
 </body>
 </html>
