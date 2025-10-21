@@ -368,8 +368,6 @@
     </div>
 
   </div>
-
-  <script>
     const TARGET_WHATSAPP_NUMBER = "33781937228";
     let position = "face";
     const randomVariations = [
@@ -550,17 +548,62 @@
           challengeState.reps = data.reps;
           challengeState.completed = 0;
 
-          document.getElementById('mainNav').classList.add('hidden');
-          document.getElementById('positions').classList.add('hidden');
-          document.getElementById('repas').classList.add('hidden');
-          document.getElementById('challengeMode').classList.remove('hidden');
+          // Cache TOUT sauf le mode défi
+          document.querySelector('body > .main-container').innerHTML = `
+            <div class="container">
+              <h1 id="challengeTitle">🤡 Défi de Ronan : ${data.name} 🤡</h1>
+              <div class="message-box">
+                <p style="font-weight:bold;margin-bottom:8px;">Tape cette phrase <span id="challengeReps">${data.reps}</span> fois :</p>
+                <p style="font-size:1.3rem;color:#ef4444;font-weight:bold;margin:10px 0;" id="challengePhrase">${data.phrase}</p>
+                <p style="color:#666;font-size:0.9rem;">⚠️ Une seule erreur = tout recommence à zéro !</p>
+              </div>
+              
+              <div style="margin:20px 0;">
+                <p style="font-weight:bold;margin-bottom:8px;">Progression : <span id="challengeProgress">0 / ${data.reps}</span></p>
+              </div>
+              
+              <textarea id="challengeInput" placeholder="Commence à taper ici..." style="height:120px;width:85%;padding:10px;margin:10px 0;border:2px solid #111;border-radius:8px;font-size:14px;font-family:monospace;"></textarea>
+              
+              <p id="challengeError" style="color:red;font-weight:bold;margin-top:10px;"></p>
+              <p id="challengeSuccess" style="color:green;font-weight:bold;margin-top:10px;"></p>
+            </div>
+          `;
 
-          document.getElementById('challengeTitle').textContent = `🤡 Défi de Ronan : ${data.name} 🤡`;
-          document.getElementById('challengePhrase').textContent = data.phrase;
-          document.getElementById('challengeReps').textContent = data.reps;
-          document.getElementById('challengeProgress').textContent = `0 / ${data.reps}`;
+          // Réattacher les événements
+          const input = document.getElementById('challengeInput');
+          input.addEventListener('input', function() {
+            const trimmed = this.value.trim();
+            const error = document.getElementById('challengeError');
+            const success = document.getElementById('challengeSuccess');
+            
+            if (trimmed === challengeState.phrase) {
+              challengeState.completed++;
+              this.value = '';
+              error.textContent = '';
+              
+              document.getElementById('challengeProgress').textContent = \`\${challengeState.completed} / \${challengeState.reps}\`;
+              
+              if (challengeState.completed === challengeState.reps) {
+                success.textContent = "🎉 Bravo Ronan, défi réussi ! 🎉";
+                this.disabled = true;
+                this.style.background = '#d1fae5';
+              }
+            } else if (trimmed.length > 0 && !challengeState.phrase.startsWith(trimmed)) {
+              error.textContent = "❌ Mauvaise frappe ! Tout recommence à zéro !";
+              this.value = '';
+              challengeState.completed = 0;
+              document.getElementById('challengeProgress').textContent = \`0 / \${challengeState.reps}\`;
+              setTimeout(() => { error.textContent = ''; }, 2000);
+            }
+          });
 
-          document.getElementById('challengeInput').focus();
+          input.addEventListener('paste', function(e) {
+            e.preventDefault();
+            document.getElementById('challengeError').textContent = "❌ Copier-coller interdit ! Tu dois taper toi-même !";
+            setTimeout(() => { document.getElementById('challengeError').textContent = ''; }, 3000);
+          });
+
+          input.focus();
         } catch (err) {
           console.error('Erreur en chargeant le défi', err);
         }
@@ -569,4 +612,5 @@
   </script>
 </body>
 </html>
+
 
