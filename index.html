@@ -189,8 +189,8 @@
     <div class="container" id="mainNav">
       <h1>🤡 Soumis Ronan le Bouffon 🤡</h1>
       <div class="tabs">
-        <button class="tab active" onclick="switchMainTab('positions')">📸 Positions</button>
-        <button class="tab" onclick="switchMainTab('repas')">🍽️ Repas de Ronan</button>
+        <button class="tab active" data-target="positions">📸 Positions</button>
+        <button class="tab" data-target="repas">🍽️ Repas de Ronan</button>
       </div>
     </div>
 
@@ -219,8 +219,8 @@
         </div>
         
         <div class="actions">
-          <button class="whatsapp-btn" onclick="sendWhatsApp()">📱 Envoyer sur WhatsApp</button>
-          <button class="joke-button" onclick="requestJoke()">😂 Demander une blague</button>
+          <button class="whatsapp-btn" id="sendWhatsappBtn">📱 Envoyer sur WhatsApp</button>
+          <button class="joke-button" id="jokeBtn">😂 Demander une blague</button>
         </div>
       </div>
     </div>
@@ -236,8 +236,8 @@
         </div>
 
         <div class="tabs">
-          <button class="tab active" onclick="switchTab('animals')">🐌 Animaux</button>
-          <button class="tab" onclick="switchTab('food')">🍽️ Nourriture</button>
+          <button class="tab active" data-sub="animals">🐌 Animaux</button>
+          <button class="tab" data-sub="food">🍽️ Nourriture</button>
         </div>
 
         <!-- SOUS-TAB ANIMAUX -->
@@ -283,11 +283,11 @@
               <p><strong>Lien du défi généré :</strong></p>
               <div class="copy-group">
                 <input type="text" id="linkAnimal" readonly style="margin-top:8px;">
-                <button onclick="copyLinkAnimal()">Copier</button>
+                <button id="copyLinkAnimalBtn">Copier</button>
               </div>
             </div>
             <div class="actions">
-              <button onclick="shareAnimalWhatsApp()" style="background:#25d366;color:white;">📱 Envoyer sur WhatsApp</button>
+              <button id="shareAnimalWhatsapp" style="background:#25d366;color:white;">📱 Envoyer sur WhatsApp</button>
             </div>
           </div>
         </div>
@@ -335,11 +335,11 @@
               <p><strong>Lien du défi généré :</strong></p>
               <div class="copy-group">
                 <input type="text" id="linkFood" readonly style="margin-top:8px;">
-                <button onclick="copyLinkFood()">Copier</button>
+                <button id="copyLinkFoodBtn">Copier</button>
               </div>
             </div>
             <div class="actions">
-              <button onclick="shareFoodWhatsApp()" style="background:#25d366;color:white;">📱 Envoyer sur WhatsApp</button>
+              <button id="shareFoodWhatsapp" style="background:#25d366;color:white;">📱 Envoyer sur WhatsApp</button>
             </div>
           </div>
         </div>
@@ -368,8 +368,31 @@
     </div>
 
   </div>
+
+  <script>
+    // ---------- Configuration ----------
     const TARGET_WHATSAPP_NUMBER = "33781937228";
-    let position = "face";
+
+    // safe base64 encode/decode for unicode (UTF-8)
+    function base64EncodeUnicode(str) {
+      // encodeURIComponent -> percent-encoding, then convert to raw bytes and btoa
+      return btoa(encodeURIComponent(str).replace(/%([0-9A-F]{2})/g, function(match, p1) {
+        return String.fromCharCode('0x' + p1);
+      }));
+    }
+    function base64DecodeUnicode(str) {
+      return decodeURIComponent(Array.prototype.map.call(atob(str), function(c) {
+        return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+      }).join(''));
+    }
+
+    // état du défi (sera rempli si ?challenge=... present)
+    let challengeState = {
+      phrase: '',
+      reps: 0,
+      completed: 0
+    };
+
     const randomVariations = [
       "arrière profil gauche",
       "arrière profil droit",
@@ -379,236 +402,252 @@
       "arrière simple"
     ];
 
-    // État du défi
-    let challengeState = {
-      phrase: '',
-      reps: 0,
-      completed: 0
-    };
+    // ---------- Helpers DOM ----------
+    function showMainTab(id) {
+      document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+      const el = document.getElementById(id);
+      if (el) el.classList.add('active');
 
-    // SWITCH ONGLET PRINCIPAL
-    function switchMainTab(tab) {
-      document.querySelectorAll('#mainNav .tab').forEach(t => t.classList.remove('active'));
-      document.querySelectorAll('.main-container > .tab-content').forEach(c => c.classList.remove('active'));
-      
-      if(tab === 'positions') {
-        document.querySelector('#mainNav .tab:nth-child(1)').classList.add('active');
-        document.getElementById('positions').classList.add('active');
-      } else {
-        document.querySelector('#mainNav .tab:nth-child(2)').classList.add('active');
-        document.getElementById('repas').classList.add('active');
-      }
+      // main tab buttons
+      document.querySelectorAll('#mainNav .tab').forEach(btn => {
+        if (btn.dataset.target === id) btn.classList.add('active');
+        else btn.classList.remove('active');
+      });
     }
 
-    // SWITCH SOUS-ONGLET REPAS
-    function switchTab(tab) {
-      document.querySelectorAll('#repas .tabs .tab').forEach(t => t.classList.remove('active'));
+    function showRepasSubTab(id) {
+      // sous-onglets dans la section repas
+      document.querySelectorAll('#repas .tabs .tab').forEach(btn => {
+        if (btn.dataset.sub === id) btn.classList.add('active');
+        else btn.classList.remove('active');
+      });
+      // masquer/afficher contenus sous-tabs
       document.querySelectorAll('#repas > .container > .tab-content').forEach(c => c.classList.remove('active'));
-      
-      if(tab === 'animals') {
-        document.querySelector('#repas .tabs .tab:nth-child(1)').classList.add('active');
-        document.getElementById('animals').classList.add('active');
-      } else {
-        document.querySelector('#repas .tabs .tab:nth-child(2)').classList.add('active');
-        document.getElementById('food').classList.add('active');
-      }
+      const content = document.getElementById(id);
+      if (content) content.classList.add('active');
     }
 
-    // POSITIONS
+    // ---------- Positions ----------
     function messageFor(pos) {
       return `Met la tête à ${pos}`;
     }
 
     function setPosition(pos) {
-      position = pos;
+      window.currentPosition = pos;
       document.getElementById("message").innerText = messageFor(pos);
     }
 
     function randomPosition() {
       const randomPos = randomVariations[Math.floor(Math.random() * randomVariations.length)];
-      position = randomPos;
+      window.currentPosition = randomPos;
       document.getElementById("message").innerText = `Met la tête à ${randomPos}`;
       alert("🎲 Position aléatoire choisie : " + randomPos + " !");
     }
 
     function sendWhatsApp() {
-      let customText = document.getElementById('customMessage').value;
-      let textToSend = customText ? encodeURIComponent(customText) : encodeURIComponent(messageFor(position));
-      window.open(`https://api.whatsapp.com/send?phone=${TARGET_WHATSAPP_NUMBER}&text=${textToSend}`, '_blank');
+      let customText = document.getElementById('customMessage').value.trim();
+      let textToSend = customText ? customText : messageFor(window.currentPosition || 'face');
+      window.open(`https://api.whatsapp.com/send?phone=${TARGET_WHATSAPP_NUMBER}&text=${encodeURIComponent(textToSend)}`, '_blank');
     }
 
     function requestJoke() {
-      const jokeMessage = encodeURIComponent("Salut Ronan, raconte-moi une blague ! 🤡");
-      window.open(`https://api.whatsapp.com/send?phone=${TARGET_WHATSAPP_NUMBER}&text=${jokeMessage}`, '_blank');
+      const jokeMessage = "Salut Ronan, raconte-moi une blague ! 🤡";
+      window.open(`https://api.whatsapp.com/send?phone=${TARGET_WHATSAPP_NUMBER}&text=${encodeURIComponent(jokeMessage)}`, '_blank');
     }
 
-    // GÉNÉRATION ANIMAUX
-    document.getElementById("generateAnimal").addEventListener("click", function() {
-      const animal = document.getElementById("animal").value;
-      const animalName = document.getElementById("animal").selectedOptions[0].text;
-      const count = parseInt(document.getElementById("countAnimal").value);
-      
-      const challengeData = { phrase: animal, reps: count, name: animalName };
-      const encoded = btoa(JSON.stringify(challengeData));
-      const link = `${window.location.origin}${window.location.pathname}?challenge=${encoded}`;
-      
-      document.getElementById("linkAnimal").value = link;
-      document.getElementById("challengeAnimal").style.display = "block";
-    });
-
-    function copyLinkAnimal() {
-      const link = document.getElementById("linkAnimal").value;
-      navigator.clipboard.writeText(link);
-      alert("✅ Lien copié !");
+    // ---------- Génération défi ----------
+    function generateChallengeLink(dataObj) {
+      const json = JSON.stringify(dataObj);
+      const encoded = base64EncodeUnicode(json);
+      return `${window.location.origin}${window.location.pathname}?challenge=${encoded}`;
     }
 
-    function shareAnimalWhatsApp() {
-      const link = document.getElementById("linkAnimal").value;
-      const animal = document.getElementById("animal").value;
-      const animalName = document.getElementById("animal").selectedOptions[0].text;
-      const count = document.getElementById("countAnimal").value;
-      const message = `🤡 REPAS DE RONAN 🤡\n\n🐌 Animal: ${animalName}\n📝 Répétitions: ${count}×\n\n🎯 Onomatopées à recopier:\n"${animal}"\n\nClique sur le lien et tape EXACTEMENT cette phrase ${count} fois (une erreur = tout recommence à zéro!) :\n\n${link}`;
-      window.open(`https://api.whatsapp.com/send?phone=${TARGET_WHATSAPP_NUMBER}&text=${encodeURIComponent(message)}`, '_blank');
+    // ---------- Utilitaires copie / partage ----------
+    function copyToClipboard(text) {
+      if (!navigator.clipboard) {
+        // fallback
+        const ta = document.createElement('textarea');
+        ta.value = text;
+        document.body.appendChild(ta);
+        ta.select();
+        document.execCommand('copy');
+        document.body.removeChild(ta);
+        return;
+      }
+      navigator.clipboard.writeText(text);
     }
 
-    // GÉNÉRATION NOURRITURE
-    document.getElementById("generateFood").addEventListener("click", function() {
-      const food = document.getElementById("foodItem").value;
-      const foodName = document.getElementById("foodItem").selectedOptions[0].text;
-      const count = parseInt(document.getElementById("countFood").value);
-      
-      const challengeData = { phrase: food, reps: count, name: foodName };
-      const encoded = btoa(JSON.stringify(challengeData));
-      const link = `${window.location.origin}${window.location.pathname}?challenge=${encoded}`;
-      
-      document.getElementById("linkFood").value = link;
-      document.getElementById("challengeFood").style.display = "block";
-    });
-
-    function copyLinkFood() {
-      const link = document.getElementById("linkFood").value;
-      navigator.clipboard.writeText(link);
-      alert("✅ Lien copié !");
-    }
-
-    function shareFoodWhatsApp() {
-      const link = document.getElementById("linkFood").value;
-      const food = document.getElementById("foodItem").value;
-      const foodName = document.getElementById("foodItem").selectedOptions[0].text;
-      const count = document.getElementById("countFood").value;
-      const message = `🤡 REPAS DE RONAN 🤡\n\n🍽️ Nourriture: ${foodName}\n📝 Répétitions: ${count}×\n\n🎯 Onomatopées à recopier:\n"${food}"\n\nClique sur le lien et tape EXACTEMENT cette phrase ${count} fois (une erreur = tout recommence à zéro!) :\n\n${link}`;
-      window.open(`https://api.whatsapp.com/send?phone=${TARGET_WHATSAPP_NUMBER}&text=${encodeURIComponent(message)}`, '_blank');
-    }
-
-    // MODE DÉFI - Gestion de la saisie
-    const challengeInput = document.getElementById('challengeInput');
-    if (challengeInput) {
-      challengeInput.addEventListener('input', function() {
-        const trimmed = this.value.trim();
-        const error = document.getElementById('challengeError');
-        const success = document.getElementById('challengeSuccess');
-        
-        if (trimmed === challengeState.phrase) {
-          challengeState.completed++;
-          this.value = '';
-          error.textContent = '';
-          
-          document.getElementById('challengeProgress').textContent = `${challengeState.completed} / ${challengeState.reps}`;
-          
-          if (challengeState.completed === challengeState.reps) {
-            success.textContent = "🎉 Bravo Ronan, défi réussi ! 🎉";
-            this.disabled = true;
-            this.style.background = '#d1fae5';
-          }
-        } else if (trimmed.length > 0 && !challengeState.phrase.startsWith(trimmed)) {
-          error.textContent = "❌ Mauvaise frappe ! Tout recommence à zéro !";
-          this.value = '';
-          challengeState.completed = 0;
-          document.getElementById('challengeProgress').textContent = `0 / ${challengeState.reps}`;
-          setTimeout(() => { error.textContent = ''; }, 2000);
-        }
-      });
-
-      challengeInput.addEventListener('paste', function(e) {
-        e.preventDefault();
-        document.getElementById('challengeError').textContent = "❌ Copier-coller interdit ! Tu dois taper toi-même !";
-        setTimeout(() => { document.getElementById('challengeError').textContent = ''; }, 3000);
-      });
-    }
-
-    // CHARGEMENT DU DÉFI
-    window.addEventListener('load', function() {
+    // ---------- Défi mode (page chargée via lien) ----------
+    function activateChallengeModeFromParams() {
       const params = new URLSearchParams(window.location.search);
       const challenge = params.get('challenge');
+      if (!challenge) return false;
 
-      if (challenge) {
-        try {
-          const data = JSON.parse(atob(challenge));
-          challengeState.phrase = data.phrase;
-          challengeState.reps = data.reps;
-          challengeState.completed = 0;
+      try {
+        const data = JSON.parse(base64DecodeUnicode(challenge));
+        challengeState.phrase = data.phrase;
+        challengeState.reps = Number(data.reps) || 0;
+        challengeState.completed = 0;
 
-          // Cache TOUT sauf le mode défi
-          document.querySelector('body > .main-container').innerHTML = `
-            <div class="container">
-              <h1 id="challengeTitle">🤡 Défi de Ronan : ${data.name} 🤡</h1>
-              <div class="message-box">
-                <p style="font-weight:bold;margin-bottom:8px;">Tape cette phrase <span id="challengeReps">${data.reps}</span> fois :</p>
-                <p style="font-size:1.3rem;color:#ef4444;font-weight:bold;margin:10px 0;" id="challengePhrase">${data.phrase}</p>
+        // remplacer le contenu principal par la vue défi (simple, pour éviter complexité)
+        document.querySelector('body').innerHTML = `
+          <div style="min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px;background:#fff;">
+            <div class="container" style="max-width:900px;width:100%;">
+              <h1 style="font-size:1.8rem;color:#ef4444;margin-bottom:10px;">🤡 Défi de Ronan : ${escapeHtml(data.name || '')} 🤡</h1>
+              <div style="border:2px dashed #111;background:#fef3c7;padding:12px;border-radius:12px;">
+                <p style="font-weight:bold;margin-bottom:8px;">Tape cette phrase <span id="challengeReps">${challengeState.reps}</span> fois :</p>
+                <p id="challengePhrase" style="font-size:1.3rem;color:#ef4444;font-weight:bold;margin:10px 0;">${escapeHtml(challengeState.phrase)}</p>
                 <p style="color:#666;font-size:0.9rem;">⚠️ Une seule erreur = tout recommence à zéro !</p>
               </div>
-              
               <div style="margin:20px 0;">
-                <p style="font-weight:bold;margin-bottom:8px;">Progression : <span id="challengeProgress">0 / ${data.reps}</span></p>
+                <p style="font-weight:bold;margin-bottom:8px;">Progression : <span id="challengeProgress">0 / ${challengeState.reps}</span></p>
               </div>
-              
               <textarea id="challengeInput" placeholder="Commence à taper ici..." style="height:120px;width:85%;padding:10px;margin:10px 0;border:2px solid #111;border-radius:8px;font-size:14px;font-family:monospace;"></textarea>
-              
               <p id="challengeError" style="color:red;font-weight:bold;margin-top:10px;"></p>
               <p id="challengeSuccess" style="color:green;font-weight:bold;margin-top:10px;"></p>
             </div>
-          `;
+          </div>
+        `;
 
-          // Réattacher les événements
-          const input = document.getElementById('challengeInput');
-          input.addEventListener('input', function() {
-            const trimmed = this.value.trim();
-            const error = document.getElementById('challengeError');
-            const success = document.getElementById('challengeSuccess');
-            
-            if (trimmed === challengeState.phrase) {
-              challengeState.completed++;
-              this.value = '';
-              error.textContent = '';
-              
-              document.getElementById('challengeProgress').textContent = \`\${challengeState.completed} / \${challengeState.reps}\`;
-              
-              if (challengeState.completed === challengeState.reps) {
-                success.textContent = "🎉 Bravo Ronan, défi réussi ! 🎉";
-                this.disabled = true;
-                this.style.background = '#d1fae5';
-              }
-            } else if (trimmed.length > 0 && !challengeState.phrase.startsWith(trimmed)) {
-              error.textContent = "❌ Mauvaise frappe ! Tout recommence à zéro !";
-              this.value = '';
-              challengeState.completed = 0;
-              document.getElementById('challengeProgress').textContent = \`0 / \${challengeState.reps}\`;
-              setTimeout(() => { error.textContent = ''; }, 2000);
+        // attacher évènements
+        const input = document.getElementById('challengeInput');
+        const error = document.getElementById('challengeError');
+        const success = document.getElementById('challengeSuccess');
+        const progress = document.getElementById('challengeProgress');
+
+        input.addEventListener('input', function() {
+          const trimmed = this.value.trim();
+          if (trimmed === challengeState.phrase) {
+            challengeState.completed++;
+            this.value = '';
+            error.textContent = '';
+            progress.textContent = `${challengeState.completed} / ${challengeState.reps}`;
+            if (challengeState.completed === challengeState.reps) {
+              success.textContent = "🎉 Bravo Ronan, défi réussi ! 🎉";
+              this.disabled = true;
+              this.style.background = '#d1fae5';
             }
-          });
+          } else if (trimmed.length > 0 && !challengeState.phrase.startsWith(trimmed)) {
+            error.textContent = "❌ Mauvaise frappe ! Tout recommence à zéro !";
+            this.value = '';
+            challengeState.completed = 0;
+            progress.textContent = `0 / ${challengeState.reps}`;
+            setTimeout(() => { error.textContent = ''; }, 2000);
+          }
+        });
 
-          input.addEventListener('paste', function(e) {
-            e.preventDefault();
-            document.getElementById('challengeError').textContent = "❌ Copier-coller interdit ! Tu dois taper toi-même !";
-            setTimeout(() => { document.getElementById('challengeError').textContent = ''; }, 3000);
-          });
+        input.addEventListener('paste', function(e) {
+          e.preventDefault();
+          error.textContent = "❌ Copier-coller interdit ! Tu dois taper toi-même !";
+          setTimeout(() => { error.textContent = ''; }, 3000);
+        });
 
-          input.focus();
-        } catch (err) {
-          console.error('Erreur en chargeant le défi', err);
-        }
+        input.focus();
+        return true;
+      } catch (err) {
+        console.error('Erreur en chargeant le défi', err);
+        return false;
       }
-    });
+    }
+
+    // small helper to escape HTML when injecting strings into innerHTML
+    function escapeHtml(unsafe) {
+      return String(unsafe)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+    }
+
+    // ---------- DOMContentLoaded initialisation ----------
+    document.addEventListener('DOMContentLoaded', function() {
+      // si on a un param challenge -> active mode défi et stop
+      if (activateChallengeModeFromParams()) {
+        return;
+      }
+
+      // main tab clicks
+      document.querySelectorAll('#mainNav .tab').forEach(btn => {
+        btn.addEventListener('click', () => {
+          showMainTab(btn.dataset.target);
+        });
+      });
+
+      // sous-tabs pour repas
+      document.querySelectorAll('#repas .tabs .tab').forEach(btn => {
+        btn.addEventListener('click', () => {
+          showRepasSubTab(btn.dataset.sub);
+        });
+      });
+
+      // initial position
+      window.currentPosition = 'face';
+      setPosition('face');
+
+      // buttons positions
+      document.getElementById('sendWhatsappBtn').addEventListener('click', sendWhatsApp);
+      document.getElementById('jokeBtn').addEventListener('click', requestJoke);
+
+      // génération animaux
+      document.getElementById("generateAnimal").addEventListener("click", function() {
+        const animal = document.getElementById("animal").value;
+        const animalName = document.getElementById("animal").selectedOptions[0].text;
+        const count = parseInt(document.getElementById("countAnimal").value, 10) || 1;
+        
+        const challengeData = { phrase: animal, reps: count, name: animalName };
+        const link = generateChallengeLink(challengeData);
+        
+        document.getElementById("linkAnimal").value = link;
+        document.getElementById("challengeAnimal").style.display = "block";
+      });
+
+      document.getElementById('copyLinkAnimalBtn').addEventListener('click', function() {
+        const link = document.getElementById("linkAnimal").value;
+        copyToClipboard(link);
+        alert("✅ Lien copié !");
+      });
+
+      document.getElementById('shareAnimalWhatsapp').addEventListener('click', function() {
+        const link = document.getElementById("linkAnimal").value;
+        const animalName = document.getElementById("animal").selectedOptions[0].text;
+        const count = document.getElementById("countAnimal").value;
+        const animal = document.getElementById("animal").value;
+        const message = `🤡 REPAS DE RONAN 🤡\n\n🐌 Animal: ${animalName}\n📝 Répétitions: ${count}×\n\n🎯 Onomatopées à recopier:\n"${animal}"\n\nClique sur le lien et tape EXACTEMENT cette phrase ${count} fois (une erreur = tout recommence à zéro!) :\n\n${link}`;
+        window.open(`https://api.whatsapp.com/send?phone=${TARGET_WHATSAPP_NUMBER}&text=${encodeURIComponent(message)}`, '_blank');
+      });
+
+      // génération food
+      document.getElementById("generateFood").addEventListener("click", function() {
+        const food = document.getElementById("foodItem").value;
+        const foodName = document.getElementById("foodItem").selectedOptions[0].text;
+        const count = parseInt(document.getElementById("countFood").value, 10) || 1;
+        
+        const challengeData = { phrase: food, reps: count, name: foodName };
+        const link = generateChallengeLink(challengeData);
+        
+        document.getElementById("linkFood").value = link;
+        document.getElementById("challengeFood").style.display = "block";
+      });
+
+      document.getElementById('copyLinkFoodBtn').addEventListener('click', function() {
+        const link = document.getElementById("linkFood").value;
+        copyToClipboard(link);
+        alert("✅ Lien copié !");
+      });
+
+      document.getElementById('shareFoodWhatsapp').addEventListener('click', function() {
+        const link = document.getElementById("linkFood").value;
+        const foodName = document.getElementById("foodItem").selectedOptions[0].text;
+        const count = document.getElementById("countFood").value;
+        const food = document.getElementById("foodItem").value;
+        const message = `🤡 REPAS DE RONAN 🤡\n\n🍽️ Nourriture: ${foodName}\n📝 Répétitions: ${count}×\n\n🎯 Onomatopées à recopier:\n"${food}"\n\nClique sur le lien et tape EXACTEMENT cette phrase ${count} fois (une erreur = tout recommence à zéro!) :\n\n${link}`;
+        window.open(`https://api.whatsapp.com/send?phone=${TARGET_WHATSAPP_NUMBER}&text=${encodeURIComponent(message)}`, '_blank');
+      });
+
+    }); // DOMContentLoaded
   </script>
 </body>
 </html>
+
+
