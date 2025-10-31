@@ -5,6 +5,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Soumis Ronan le Bouffon</title>
   <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    
     body {
       font-family: 'Comic Sans MS', cursive, sans-serif;
       background: repeating-linear-gradient(
@@ -18,188 +24,286 @@
         #ef4444 75%,
         #ef4444 100%
       );
+      background-size: 40px 40px;
       display: flex;
       justify-content: center;
       align-items: center;
       min-height: 100vh;
-      margin: 0;
-      padding: 20px;
+      padding: 10px;
       color: #111;
     }
+    
     .main-container {
       max-width: 900px;
       width: 100%;
     }
+    
     .container {
       background: white;
-      border-radius: 20px;
+      border-radius: 15px;
       box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-      padding: 20px;
-      margin-bottom: 20px;
+      padding: 15px;
+      margin-bottom: 15px;
       text-align: center;
     }
+    
     h1 {
-      font-size: 1.8rem;
+      font-size: 1.5rem;
       margin-bottom: 10px;
       color: #ef4444;
+      word-wrap: break-word;
     }
+    
     h2 {
-      font-size: 1.4rem;
+      font-size: 1.2rem;
       margin-bottom: 10px;
       color: #3b82f6;
+      word-wrap: break-word;
     }
+    
     .buttons {
       display: flex;
       flex-wrap: wrap;
-      gap: 10px;
-      margin: 20px 0;
+      gap: 8px;
+      margin: 15px 0;
       justify-content: center;
     }
+    
     .buttons button {
-      flex: 1;
+      flex: 1 1 calc(50% - 8px);
       min-width: 120px;
-      padding: 12px;
-      border-radius: 12px;
+      padding: 12px 8px;
+      border-radius: 10px;
       border: 2px solid #111;
       cursor: pointer;
       font-weight: bold;
-      font-size: 14px;
+      font-size: 13px;
       transition: transform 0.2s;
+      touch-action: manipulation;
     }
-    .buttons button:hover {
-      transform: scale(1.05);
+    
+    .buttons button:active {
+      transform: scale(0.95);
     }
+    
     .message-box {
       border: 2px dashed #111;
       background: #fef3c7;
       padding: 12px;
-      border-radius: 12px;
-      margin-bottom: 20px;
+      border-radius: 10px;
+      margin-bottom: 15px;
       min-height: 50px;
+      word-wrap: break-word;
     }
+    
     .message-box strong {
       display: block;
       margin-bottom: 8px;
     }
+    
     #message {
-      font-size: 16px;
+      font-size: 15px;
       font-weight: bold;
       color: #111;
     }
+    
     .actions {
-      margin-top: 20px;
+      margin-top: 15px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
     }
+    
     .actions button {
-      padding: 12px 20px;
+      width: 100%;
+      padding: 12px 15px;
       border-radius: 8px;
       font-size: 14px;
       font-weight: bold;
-      display: inline-block;
-      margin: 5px;
       border: 2px solid #111;
       cursor: pointer;
       transition: transform 0.2s;
+      touch-action: manipulation;
     }
-    .actions button:hover {
-      transform: scale(1.05);
+    
+    .actions button:active {
+      transform: scale(0.95);
     }
+    
     .whatsapp-btn {
       background: #25d366;
       color: white;
     }
+    
     .joke-button {
       background: #f59e0b;
       color: white;
     }
+    
     input[type='text'], input[type='number'], select {
-      width: 85%;
-      padding: 10px;
+      width: 100%;
+      padding: 12px;
       margin: 10px 0;
       border: 2px solid #111;
       border-radius: 8px;
       font-size: 14px;
     }
+    
     textarea {
-      width: 85%;
-      height: 150px;
-      padding: 10px;
+      width: 100%;
+      min-height: 120px;
+      padding: 12px;
       margin: 10px 0;
       border: 2px solid #111;
       border-radius: 8px;
       font-size: 14px;
       font-family: monospace;
+      resize: vertical;
     }
+    
     .note {
       background: #dbeafe;
       border-left: 4px solid #3b82f6;
-      padding: 15px;
+      padding: 12px;
       margin: 15px 0;
       border-radius: 8px;
       text-align: left;
+      font-size: 13px;
     }
+    
     .note strong {
       color: #1e40af;
       display: block;
       margin-bottom: 8px;
     }
+    
     .tabs {
       display: flex;
-      gap: 10px;
+      gap: 8px;
       margin-bottom: 15px;
       justify-content: center;
       flex-wrap: wrap;
     }
+    
     .tab {
-      padding: 10px 20px;
+      flex: 1 1 auto;
+      padding: 10px 15px;
       background: #e5e7eb;
       border: 2px solid #111;
       color: #111;
       cursor: pointer;
       border-radius: 8px;
-      font-size: 14px;
+      font-size: 13px;
       font-weight: bold;
       transition: all 0.2s;
+      touch-action: manipulation;
+      white-space: nowrap;
     }
+    
     .tab.active {
       background: #3b82f6;
       color: white;
     }
+    
     .tab-content {
       display: none;
     }
+    
     .tab-content.active {
       display: block;
     }
+    
     .hidden {
       display: none;
     }
+    
     .copy-group {
       display: flex;
-      gap: 4px;
+      gap: 8px;
+      flex-direction: column;
     }
+    
     .copy-group input {
       flex: 1;
+    }
+    
+    .copy-group button {
+      padding: 10px;
+      background: #3b82f6;
+      color: white;
+      border: 2px solid #111;
+      border-radius: 8px;
+      font-weight: bold;
+      cursor: pointer;
+      touch-action: manipulation;
+    }
+    
+    .copy-group button:active {
+      transform: scale(0.95);
+    }
+    
+    label {
+      display: block;
+      font-weight: bold;
+      margin: 12px 0 5px 0;
+      text-align: left;
+    }
+    
+    @media (max-width: 480px) {
+      body {
+        padding: 5px;
+      }
+      
+      h1 {
+        font-size: 1.3rem;
+      }
+      
+      h2 {
+        font-size: 1.1rem;
+      }
+      
+      .container {
+        padding: 12px;
+        border-radius: 12px;
+      }
+      
+      .buttons button {
+        flex: 1 1 100%;
+        min-width: 100%;
+      }
+      
+      .tab {
+        font-size: 12px;
+        padding: 8px 12px;
+      }
+    }
+    
+    @media screen and (max-width: 767px) {
+      input[type='text'], 
+      input[type='number'], 
+      select, 
+      textarea {
+        font-size: 16px;
+      }
     }
   </style>
 </head>
 <body>
   <div class="main-container">
     
-    <!-- ONGLETS PRINCIPAUX -->
     <div class="container" id="mainNav">
       <h1>🤡 Soumis Ronan le Bouffon 🤡</h1>
       <div class="tabs">
         <button class="tab active" data-target="positions">📸 Positions</button>
-        <button class="tab" data-target="repas">🍽️ Repas de Ronan</button>
+        <button class="tab" data-target="repas">🍽️ Repas</button>
       </div>
     </div>
 
-    <!-- TAB POSITIONS -->
     <div id="positions" class="tab-content active">
       <div class="container">
         <h2>Positions de la tête</h2>
-        <p>Choisis une position et envoie le message sur WhatsApp.</p>
-        <p><strong>Ronan devra envoyer une photo de lui-même dans la position souhaitée.</strong></p>
+        <p style="margin-bottom: 15px; font-size: 14px;">Choisis une position et envoie le message sur WhatsApp.</p>
+        <p style="margin-bottom: 15px; font-size: 14px;"><strong>Ronan devra envoyer une photo de lui-même dans la position souhaitée.</strong></p>
         
         <div class="buttons">
           <button onclick="setPosition('face')" style="background:#ef4444;color:white;">Face</button>
@@ -215,7 +319,7 @@
         </div>
         
         <div>
-          <input type="text" id="customMessage" placeholder="Écris un message personnalisé pour Ronan">
+          <input type="text" id="customMessage" placeholder="Message personnalisé pour Ronan">
         </div>
         
         <div class="actions">
@@ -225,7 +329,6 @@
       </div>
     </div>
 
-    <!-- TAB REPAS DE RONAN -->
     <div id="repas" class="tab-content">
       <div class="container">
         <h2>🤢 Les Repas de Ronan 🤢</h2>
@@ -240,11 +343,10 @@
           <button class="tab" data-sub="food">🍽️ Nourriture</button>
         </div>
 
-        <!-- SOUS-TAB ANIMAUX -->
         <div id="animals" class="tab-content active">
-          <h2 style="font-size:1.2rem;">Animaux Dégoûtants</h2>
+          <h2 style="font-size:1.1rem;margin-top:15px;">Animaux Dégoûtants</h2>
           <div>
-            <label for="animal"><strong>Choisir un animal :</strong></label>
+            <label for="animal">Choisir un animal :</label>
             <select id="animal">
               <option value="sluuuurpp glouuuup schliiick">Limace géante africaine</option>
               <option value="glop glop plouchhh schluuurrp">Ver marin perforateur de bois</option>
@@ -270,7 +372,7 @@
           </div>
 
           <div>
-            <label for="countAnimal"><strong>Nombre de répétitions :</strong></label>
+            <label for="countAnimal">Nombre de répétitions :</label>
             <input type="number" id="countAnimal" min="1" max="50" value="5">
           </div>
 
@@ -278,12 +380,12 @@
             <button id="generateAnimal" style="background:#f59e0b;color:white;">Générer le défi</button>
           </div>
 
-          <div id="challengeAnimal" style="display:none; margin-top:20px;">
+          <div id="challengeAnimal" style="display:none; margin-top:15px;">
             <div class="message-box" style="background:#fef3c7;">
               <p><strong>Lien du défi généré :</strong></p>
               <div class="copy-group">
-                <input type="text" id="linkAnimal" readonly style="margin-top:8px;">
-                <button id="copyLinkAnimalBtn">Copier</button>
+                <input type="text" id="linkAnimal" readonly>
+                <button id="copyLinkAnimalBtn">📋 Copier le lien</button>
               </div>
             </div>
             <div class="actions">
@@ -292,11 +394,10 @@
           </div>
         </div>
 
-        <!-- SOUS-TAB NOURRITURE -->
         <div id="food" class="tab-content">
-          <h2 style="font-size:1.2rem;">Nourritures Dégoûtantes</h2>
+          <h2 style="font-size:1.1rem;margin-top:15px;">Nourritures Dégoûtantes</h2>
           <div>
-            <label for="foodItem"><strong>Choisir une nourriture :</strong></label>
+            <label for="foodItem">Choisir une nourriture :</label>
             <select id="foodItem">
               <option value="miam slurrrrp crunch glop">Œufs de cent ans pourris</option>
               <option value="gloub schluup beurk plop">Fromage au lait cru moisi</option>
@@ -322,7 +423,7 @@
           </div>
 
           <div>
-            <label for="countFood"><strong>Nombre de répétitions :</strong></label>
+            <label for="countFood">Nombre de répétitions :</label>
             <input type="number" id="countFood" min="1" max="50" value="5">
           </div>
 
@@ -330,12 +431,12 @@
             <button id="generateFood" style="background:#f59e0b;color:white;">Générer le défi</button>
           </div>
 
-          <div id="challengeFood" style="display:none; margin-top:20px;">
+          <div id="challengeFood" style="display:none; margin-top:15px;">
             <div class="message-box" style="background:#fef3c7;">
               <p><strong>Lien du défi généré :</strong></p>
               <div class="copy-group">
-                <input type="text" id="linkFood" readonly style="margin-top:8px;">
-                <button id="copyLinkFoodBtn">Copier</button>
+                <input type="text" id="linkFood" readonly>
+                <button id="copyLinkFoodBtn">📋 Copier le lien</button>
               </div>
             </div>
             <div class="actions">
@@ -346,47 +447,23 @@
       </div>
     </div>
 
-    <!-- MODE DÉFI (quand Ronan clique sur le lien) -->
-    <div id="challengeMode" class="hidden">
-      <div class="container">
-        <h1 id="challengeTitle">🤡 Défi de Ronan 🤡</h1>
-        <div class="message-box">
-          <p style="font-weight:bold;margin-bottom:8px;">Tape cette phrase <span id="challengeReps"></span> fois :</p>
-          <p style="font-size:1.3rem;color:#ef4444;font-weight:bold;margin:10px 0;" id="challengePhrase"></p>
-          <p style="color:#666;font-size:0.9rem;">⚠️ Une seule erreur = tout recommence à zéro !</p>
-        </div>
-        
-        <div style="margin:20px 0;">
-          <p style="font-weight:bold;margin-bottom:8px;">Progression : <span id="challengeProgress">0 / 0</span></p>
-        </div>
-        
-        <textarea id="challengeInput" placeholder="Commence à taper ici..." style="height:120px;"></textarea>
-        
-        <p id="challengeError" style="color:red;font-weight:bold;margin-top:10px;"></p>
-        <p id="challengeSuccess" style="color:green;font-weight:bold;margin-top:10px;"></p>
-      </div>
-    </div>
-
   </div>
 
   <script>
-    // ---------- Configuration ----------
     const TARGET_WHATSAPP_NUMBER = "33781937228";
 
-    // safe base64 encode/decode for unicode (UTF-8)
     function base64EncodeUnicode(str) {
-      // encodeURIComponent -> percent-encoding, then convert to raw bytes and btoa
       return btoa(encodeURIComponent(str).replace(/%([0-9A-F]{2})/g, function(match, p1) {
         return String.fromCharCode('0x' + p1);
       }));
     }
+    
     function base64DecodeUnicode(str) {
       return decodeURIComponent(Array.prototype.map.call(atob(str), function(c) {
         return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
       }).join(''));
     }
 
-    // état du défi (sera rempli si ?challenge=... present)
     let challengeState = {
       phrase: '',
       reps: 0,
@@ -402,13 +479,11 @@
       "arrière simple"
     ];
 
-    // ---------- Helpers DOM ----------
     function showMainTab(id) {
       document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
       const el = document.getElementById(id);
       if (el) el.classList.add('active');
 
-      // main tab buttons
       document.querySelectorAll('#mainNav .tab').forEach(btn => {
         if (btn.dataset.target === id) btn.classList.add('active');
         else btn.classList.remove('active');
@@ -416,18 +491,15 @@
     }
 
     function showRepasSubTab(id) {
-      // sous-onglets dans la section repas
       document.querySelectorAll('#repas .tabs .tab').forEach(btn => {
         if (btn.dataset.sub === id) btn.classList.add('active');
         else btn.classList.remove('active');
       });
-      // masquer/afficher contenus sous-tabs
       document.querySelectorAll('#repas > .container > .tab-content').forEach(c => c.classList.remove('active'));
       const content = document.getElementById(id);
       if (content) content.classList.add('active');
     }
 
-    // ---------- Positions ----------
     function messageFor(pos) {
       return `Met la tête à ${pos}`;
     }
@@ -455,19 +527,18 @@
       window.open(`https://api.whatsapp.com/send?phone=${TARGET_WHATSAPP_NUMBER}&text=${encodeURIComponent(jokeMessage)}`, '_blank');
     }
 
-    // ---------- Génération défi ----------
     function generateChallengeLink(dataObj) {
       const json = JSON.stringify(dataObj);
       const encoded = base64EncodeUnicode(json);
       return `${window.location.origin}${window.location.pathname}?challenge=${encoded}`;
     }
 
-    // ---------- Utilitaires copie / partage ----------
     function copyToClipboard(text) {
       if (!navigator.clipboard) {
-        // fallback
         const ta = document.createElement('textarea');
         ta.value = text;
+        ta.style.position = 'fixed';
+        ta.style.left = '-9999px';
         document.body.appendChild(ta);
         ta.select();
         document.execCommand('copy');
@@ -477,7 +548,6 @@
       navigator.clipboard.writeText(text);
     }
 
-    // ---------- Défi mode (page chargée via lien) ----------
     function activateChallengeModeFromParams() {
       const params = new URLSearchParams(window.location.search);
       const challenge = params.get('challenge');
@@ -489,27 +559,25 @@
         challengeState.reps = Number(data.reps) || 0;
         challengeState.completed = 0;
 
-        // remplacer le contenu principal par la vue défi (simple, pour éviter complexité)
         document.querySelector('body').innerHTML = `
-          <div style="min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px;background:#fff;">
-            <div class="container" style="max-width:900px;width:100%;">
-              <h1 style="font-size:1.8rem;color:#ef4444;margin-bottom:10px;">🤡 Défi de Ronan : ${escapeHtml(data.name || '')} 🤡</h1>
-              <div style="border:2px dashed #111;background:#fef3c7;padding:12px;border-radius:12px;">
-                <p style="font-weight:bold;margin-bottom:8px;">Tape cette phrase <span id="challengeReps">${challengeState.reps}</span> fois :</p>
-                <p id="challengePhrase" style="font-size:1.3rem;color:#ef4444;font-weight:bold;margin:10px 0;">${escapeHtml(challengeState.phrase)}</p>
+          <div style="min-height:100vh;display:flex;align-items:center;justify-content:center;padding:15px;background:#fff;">
+            <div style="max-width:900px;width:100%;background:white;border-radius:15px;box-shadow:0 4px 12px rgba(0,0,0,0.2);padding:15px;">
+              <h1 style="font-size:1.5rem;color:#ef4444;margin-bottom:15px;word-wrap:break-word;">🤡 Défi de Ronan : ${escapeHtml(data.name || '')} 🤡</h1>
+              <div style="border:2px dashed #111;background:#fef3c7;padding:12px;border-radius:10px;margin-bottom:15px;">
+                <p style="font-weight:bold;margin-bottom:8px;font-size:14px;">Tape cette phrase <span id="challengeReps">${challengeState.reps}</span> fois :</p>
+                <p id="challengePhrase" style="font-size:1.2rem;color:#ef4444;font-weight:bold;margin:10px 0;word-wrap:break-word;">${escapeHtml(challengeState.phrase)}</p>
                 <p style="color:#666;font-size:0.9rem;">⚠️ Une seule erreur = tout recommence à zéro !</p>
               </div>
-              <div style="margin:20px 0;">
-                <p style="font-weight:bold;margin-bottom:8px;">Progression : <span id="challengeProgress">0 / ${challengeState.reps}</span></p>
+              <div style="margin:15px 0;">
+                <p style="font-weight:bold;margin-bottom:8px;font-size:14px;">Progression : <span id="challengeProgress">0 / ${challengeState.reps}</span></p>
               </div>
-              <textarea id="challengeInput" placeholder="Commence à taper ici..." style="height:120px;width:85%;padding:10px;margin:10px 0;border:2px solid #111;border-radius:8px;font-size:14px;font-family:monospace;"></textarea>
-              <p id="challengeError" style="color:red;font-weight:bold;margin-top:10px;"></p>
-              <p id="challengeSuccess" style="color:green;font-weight:bold;margin-top:10px;"></p>
+              <textarea id="challengeInput" placeholder="Commence à taper ici..." style="min-height:120px;width:100%;padding:12px;border:2px solid #111;border-radius:8px;font-size:16px;font-family:monospace;resize:vertical;"></textarea>
+              <p id="challengeError" style="color:red;font-weight:bold;margin-top:10px;font-size:14px;"></p>
+              <p id="challengeSuccess" style="color:green;font-weight:bold;margin-top:10px;font-size:14px;"></p>
             </div>
           </div>
         `;
 
-        // attacher évènements
         const input = document.getElementById('challengeInput');
         const error = document.getElementById('challengeError');
         const success = document.getElementById('challengeSuccess');
@@ -550,7 +618,6 @@
       }
     }
 
-    // small helper to escape HTML when injecting strings into innerHTML
     function escapeHtml(unsafe) {
       return String(unsafe)
         .replace(/&/g, "&amp;")
@@ -560,36 +627,29 @@
         .replace(/'/g, "&#039;");
     }
 
-    // ---------- DOMContentLoaded initialisation ----------
     document.addEventListener('DOMContentLoaded', function() {
-      // si on a un param challenge -> active mode défi et stop
       if (activateChallengeModeFromParams()) {
         return;
       }
 
-      // main tab clicks
       document.querySelectorAll('#mainNav .tab').forEach(btn => {
         btn.addEventListener('click', () => {
           showMainTab(btn.dataset.target);
         });
       });
 
-      // sous-tabs pour repas
       document.querySelectorAll('#repas .tabs .tab').forEach(btn => {
         btn.addEventListener('click', () => {
           showRepasSubTab(btn.dataset.sub);
         });
       });
 
-      // initial position
       window.currentPosition = 'face';
       setPosition('face');
 
-      // buttons positions
       document.getElementById('sendWhatsappBtn').addEventListener('click', sendWhatsApp);
       document.getElementById('jokeBtn').addEventListener('click', requestJoke);
 
-      // génération animaux
       document.getElementById("generateAnimal").addEventListener("click", function() {
         const animal = document.getElementById("animal").value;
         const animalName = document.getElementById("animal").selectedOptions[0].text;
@@ -617,7 +677,6 @@
         window.open(`https://api.whatsapp.com/send?phone=${TARGET_WHATSAPP_NUMBER}&text=${encodeURIComponent(message)}`, '_blank');
       });
 
-      // génération food
       document.getElementById("generateFood").addEventListener("click", function() {
         const food = document.getElementById("foodItem").value;
         const foodName = document.getElementById("foodItem").selectedOptions[0].text;
@@ -645,9 +704,7 @@
         window.open(`https://api.whatsapp.com/send?phone=${TARGET_WHATSAPP_NUMBER}&text=${encodeURIComponent(message)}`, '_blank');
       });
 
-    }); // DOMContentLoaded
+    });
   </script>
 </body>
 </html>
-
-
