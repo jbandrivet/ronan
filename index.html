@@ -2,352 +2,270 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Soumis Ronan le Bouffon</title>
   <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
+    :root {
+      --primary: #3b82f6;   /* Bleu */
+      --secondary: #f59e0b; /* Jaune/Orange */
+      --danger: #ef4444;    /* Rouge */
+      --success: #10b981;   /* Vert */
+      --dark: #1f2937;
+      --light: #f3f4f6;
     }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
     
     body {
-      font-family: 'Comic Sans MS', cursive, sans-serif;
-      background: repeating-linear-gradient(
-        45deg,
-        #f59e0b 0,
-        #f59e0b 25%,
-        #3b82f6 25%,
-        #3b82f6 50%,
-        #10b981 50%,
-        #10b981 75%,
-        #ef4444 75%,
-        #ef4444 100%
-      );
-      background-size: 40px 40px;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background: #e5e7eb;
+      background-image: repeating-linear-gradient(45deg, #e5e7eb 25%, #f3f4f6 25%, #f3f4f6 50%, #e5e7eb 50%, #e5e7eb 75%, #f3f4f6 75%, #f3f4f6 100%);
+      background-size: 20px 20px;
+      min-height: 100vh;
       display: flex;
       justify-content: center;
       align-items: center;
-      min-height: 100vh;
       padding: 10px;
-      color: #111;
+      color: var(--dark);
     }
-    
-    .main-container {
-      max-width: 900px;
+
+    .app-container {
+      max-width: 600px;
       width: 100%;
     }
-    
-    .container {
+
+    /* --- CARDS & LAYOUT --- */
+    .card {
       background: white;
-      border-radius: 15px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-      padding: 15px;
-      margin-bottom: 15px;
-      text-align: center;
+      border-radius: 16px;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+      padding: 20px;
+      margin-bottom: 20px;
+      border: 1px solid rgba(0,0,0,0.05);
     }
-    
+
     h1 {
       font-size: 1.5rem;
-      margin-bottom: 10px;
-      color: #ef4444;
-      word-wrap: break-word;
+      text-align: center;
+      color: var(--danger);
+      margin-bottom: 15px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: -0.5px;
     }
-    
+
     h2 {
-      font-size: 1.2rem;
-      margin-bottom: 10px;
-      color: #3b82f6;
-      word-wrap: break-word;
-    }
-    
-    .buttons {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      margin: 15px 0;
-      justify-content: center;
-    }
-    
-    .buttons button {
-      flex: 1 1 calc(50% - 8px);
-      min-width: 120px;
-      padding: 12px 8px;
-      border-radius: 10px;
-      border: 2px solid #111;
-      cursor: pointer;
-      font-weight: bold;
-      font-size: 13px;
-      transition: transform 0.2s;
-      touch-action: manipulation;
-    }
-    
-    .buttons button:active {
-      transform: scale(0.95);
-    }
-    
-    .message-box {
-      border: 2px dashed #111;
-      background: #fef3c7;
-      padding: 12px;
-      border-radius: 10px;
+      font-size: 1.1rem;
       margin-bottom: 15px;
-      min-height: 50px;
-      word-wrap: break-word;
-    }
-    
-    .message-box strong {
-      display: block;
-      margin-bottom: 8px;
-    }
-    
-    #message {
-      font-size: 15px;
-      font-weight: bold;
-      color: #111;
-    }
-    
-    .actions {
-      margin-top: 15px;
+      color: var(--primary);
       display: flex;
-      flex-direction: column;
+      align-items: center;
       gap: 8px;
     }
-    
-    .actions button {
-      width: 100%;
-      padding: 12px 15px;
-      border-radius: 8px;
-      font-size: 14px;
-      font-weight: bold;
-      border: 2px solid #111;
-      cursor: pointer;
-      transition: transform 0.2s;
-      touch-action: manipulation;
-    }
-    
-    .actions button:active {
-      transform: scale(0.95);
-    }
-    
-    .whatsapp-btn {
-      background: #25d366;
-      color: white;
-    }
-    
-    .joke-button {
-      background: #f59e0b;
-      color: white;
-    }
-    
-    input[type='text'], input[type='number'], select {
-      width: 100%;
-      padding: 12px;
-      margin: 10px 0;
-      border: 2px solid #111;
-      border-radius: 8px;
-      font-size: 14px;
-    }
-    
-    textarea {
-      width: 100%;
-      min-height: 120px;
-      padding: 12px;
-      margin: 10px 0;
-      border: 2px solid #111;
-      border-radius: 8px;
-      font-size: 14px;
-      font-family: monospace;
-      resize: vertical;
-    }
-    
-    .note {
-      background: #dbeafe;
-      border-left: 4px solid #3b82f6;
-      padding: 12px;
-      margin: 15px 0;
-      border-radius: 8px;
-      text-align: left;
-      font-size: 13px;
-    }
-    
-    .note strong {
-      color: #1e40af;
-      display: block;
-      margin-bottom: 8px;
-    }
-    
-    .tabs {
+
+    /* --- NAVIGATION TABS --- */
+    .nav-tabs {
       display: flex;
-      gap: 8px;
-      margin-bottom: 15px;
-      justify-content: center;
-      flex-wrap: wrap;
-    }
-    
-    .tab {
-      flex: 1 1 auto;
-      padding: 10px 15px;
       background: #e5e7eb;
-      border: 2px solid #111;
-      color: #111;
-      cursor: pointer;
-      border-radius: 8px;
-      font-size: 13px;
-      font-weight: bold;
-      transition: all 0.2s;
-      touch-action: manipulation;
-      white-space: nowrap;
+      padding: 4px;
+      border-radius: 12px;
+      margin-bottom: 20px;
     }
-    
-    .tab.active {
-      background: #3b82f6;
-      color: white;
-    }
-    
-    .tab-content {
-      display: none;
-    }
-    
-    .tab-content.active {
-      display: block;
-    }
-    
-    .hidden {
-      display: none;
-    }
-    
-    .copy-group {
-      display: flex;
-      gap: 8px;
-      flex-direction: column;
-    }
-    
-    .copy-group input {
+
+    .nav-tab {
       flex: 1;
-    }
-    
-    .copy-group button {
-      padding: 10px;
-      background: #3b82f6;
-      color: white;
-      border: 2px solid #111;
-      border-radius: 8px;
-      font-weight: bold;
+      padding: 12px;
+      border: none;
+      background: transparent;
+      font-weight: 600;
       cursor: pointer;
-      touch-action: manipulation;
+      border-radius: 9px;
+      transition: all 0.2s ease;
+      font-size: 0.95rem;
+      color: #6b7280;
     }
-    
-    .copy-group button:active {
-      transform: scale(0.95);
+
+    .nav-tab.active {
+      background: white;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      color: var(--primary);
     }
+
+    /* --- FORM ELEMENTS --- */
+    .control-group { margin-bottom: 15px; }
     
     label {
       display: block;
+      font-size: 0.85rem;
+      font-weight: 700;
+      margin-bottom: 6px;
+      color: #374151;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    select, input, textarea {
+      width: 100%;
+      padding: 14px;
+      border: 2px solid #e5e7eb;
+      border-radius: 12px;
+      font-size: 16px; /* Empêche le zoom sur iOS */
+      background: #fff;
+      transition: border-color 0.2s;
+      font-family: inherit;
+    }
+
+    select:focus, input:focus, textarea:focus {
+      border-color: var(--primary);
+      outline: none;
+    }
+
+    textarea {
+      resize: vertical;
+      min-height: 120px;
+      font-family: 'Courier New', Courier, monospace;
+    }
+
+    /* --- BUTTONS --- */
+    .btn {
+      width: 100%;
+      padding: 15px;
+      border: none;
+      border-radius: 12px;
       font-weight: bold;
-      margin: 12px 0 5px 0;
-      text-align: left;
+      font-size: 1rem;
+      cursor: pointer;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 8px;
+      transition: transform 0.1s, filter 0.2s;
+      margin-bottom: 10px;
+      color: white;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+
+    .btn:active { transform: scale(0.98); }
+    
+    .btn-whatsapp { background: #25d366; }
+    .btn-whatsapp:hover { background: #1ebc57; }
+    
+    .btn-random { background: #8b5cf6; }
+    .btn-generate { background: var(--secondary); }
+    .btn-copy { background: var(--primary); }
+
+    /* --- PREVIEWS & FEEDBACK --- */
+    .message-preview {
+      background: #fffbeb;
+      border: 2px dashed #fcd34d;
+      color: #92400e;
+      padding: 15px;
+      border-radius: 12px;
+      margin: 15px 0;
+      text-align: center;
+      font-weight: bold;
+      font-size: 1.1rem;
+      word-wrap: break-word;
+    }
+
+    .note {
+      background: #eff6ff;
+      border-left: 4px solid var(--primary);
+      padding: 12px;
+      font-size: 0.85rem;
+      color: #1e40af;
+      margin-bottom: 15px;
+      border-radius: 4px;
+    }
+
+    /* --- UTILS --- */
+    .tab-content { display: none; animation: fadeIn 0.3s ease-out; }
+    .tab-content.active { display: block; }
+    .hidden { display: none !important; }
+
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+
+    /* --- CHALLENGE MODE SPECIFIC --- */
+    #challenge-interface {
+      text-align: center;
     }
     
-    @media (max-width: 480px) {
-      body {
-        padding: 5px;
-      }
-      
-      h1 {
-        font-size: 1.3rem;
-      }
-      
-      h2 {
-        font-size: 1.1rem;
-      }
-      
-      .container {
-        padding: 12px;
-        border-radius: 12px;
-      }
-      
-      .buttons button {
-        flex: 1 1 100%;
-        min-width: 100%;
-      }
-      
-      .tab {
-        font-size: 12px;
-        padding: 8px 12px;
-      }
+    .challenge-phrase {
+      font-family: monospace;
+      font-size: 1.1rem;
+      color: var(--danger);
+      background: #fee2e2;
+      padding: 10px;
+      border-radius: 8px;
+      word-break: break-all;
+      margin: 10px 0;
     }
     
-    @media screen and (max-width: 767px) {
-      input[type='text'], 
-      input[type='number'], 
-      select, 
-      textarea {
-        font-size: 16px;
-      }
-    }
+    .error-msg { color: var(--danger); font-weight: bold; min-height: 24px; }
+    .success-msg { color: var(--success); font-weight: bold; font-size: 1.2rem; }
+    .progress-bar { font-size: 1.2rem; font-weight: 800; color: var(--primary); margin: 10px 0; }
+
   </style>
 </head>
 <body>
-  <div class="main-container">
-    
-    <div class="container" id="mainNav">
-      <h1>🤡 Soumis Ronan le Bouffon 🤡</h1>
-      <div class="tabs">
-        <button class="tab active" data-target="positions">📸 Positions</button>
-        <button class="tab" data-target="repas">🍽️ Repas</button>
+
+  <div id="main-interface" class="app-container">
+    <div class="card" style="padding: 15px;">
+      <h1>🤡 Ronan le Bouffon</h1>
+      <div class="nav-tabs">
+        <button class="nav-tab active" onclick="switchTab('tab-pos', this)">📸 Positions</button>
+        <button class="nav-tab" onclick="switchTab('tab-food', this)">🍽️ Repas</button>
       </div>
     </div>
 
-    <div id="positions" class="tab-content active">
-      <div class="container">
-        <h2>Positions de la tête</h2>
-        <p style="margin-bottom: 15px; font-size: 14px;">Choisis une position et envoie le message sur WhatsApp.</p>
-        <p style="margin-bottom: 15px; font-size: 14px;"><strong>Ronan devra envoyer une photo de lui-même dans la position souhaitée.</strong></p>
+    <div id="tab-pos" class="tab-content active">
+      <div class="card">
+        <h2>📷 Contrôle de la Tête</h2>
         
-        <div class="buttons">
-          <button onclick="setPosition('face')" style="background:#ef4444;color:white;">Face</button>
-          <button onclick="setPosition('gauche')" style="background:#3b82f6;color:white;">Gauche</button>
-          <button onclick="setPosition('droite')" style="background:#10b981;color:white;">Droite</button>
-          <button onclick="setPosition('arriere')" style="background:#8b5cf6;color:white;">Arrière</button>
-          <button onclick="randomPosition()" style="background:#ec4899;color:white;">🎲 Aléatoire</button>
+        <div class="control-group">
+          <label>Action demandée :</label>
+          <select id="pos-action" onchange="updatePreview()">
+            <option value="static">Met la tête à...</option>
+            <option value="rotate">Tourne la tête...</option>
+            <option value="profile">Mets-toi de profil...</option>
+          </select>
         </div>
+
+        <div class="control-group">
+          <label>Direction :</label>
+          <select id="pos-dir" onchange="updatePreview()">
+            <option value="face">Face</option>
+            <option value="gauche">Gauche ⬅️</option>
+            <option value="droite">Droite ➡️</option>
+            <option value="arrière">Arrière 🔙</option>
+          </select>
+        </div>
+
+        <div class="message-preview" id="pos-preview-text">
+          Met la tête à face
+        </div>
+
+        <button class="btn btn-whatsapp" onclick="sendPosWhatsapp()">
+          📱 Envoyer l'ordre
+        </button>
         
-        <div class="message-box">
-          <strong>Message pré-écrit :</strong>
-          <div id="message">Met la tête à face</div>
-        </div>
-        
-        <div>
-          <input type="text" id="customMessage" placeholder="Message personnalisé pour Ronan">
-        </div>
-        
-        <div class="actions">
-          <button class="whatsapp-btn" id="sendWhatsappBtn">📱 Envoyer sur WhatsApp</button>
-          <button class="joke-button" id="jokeBtn">😂 Demander une blague</button>
-        </div>
+        <button class="btn btn-random" onclick="setRandomPos()">
+          🎲 Position Aléatoire
+        </button>
       </div>
     </div>
 
-    <div id="repas" class="tab-content">
-      <div class="container">
-        <h2>🤢 Les Repas de Ronan 🤢</h2>
-        
+    <div id="tab-food" class="tab-content">
+      <div class="card">
+        <h2>🤢 Générateur de Défi</h2>
         <div class="note">
-          <strong>📝 Comment ça marche ?</strong>
-          Tu choisis un animal ou une nourriture dégoûtante avec ses onomatopées. Le système génère un lien que tu envoies à Ronan sur WhatsApp. Ronan devra alors taper EXACTEMENT les onomatopées le nombre de fois demandé. S'il fait UNE SEULE erreur, tout est effacé et il recommence à zéro ! 😈
+          <strong>Règle :</strong> Ronan devra recopier les onomatopées. Une seule erreur et tout s'efface !
         </div>
 
-        <div class="tabs">
-          <button class="tab active" data-sub="animals">🐌 Animaux</button>
-          <button class="tab" data-sub="food">🍽️ Nourriture</button>
-        </div>
-
-        <div id="animals" class="tab-content active">
-          <h2 style="font-size:1.1rem;margin-top:15px;">Animaux Dégoûtants</h2>
-          <div>
-            <label for="animal">Choisir un animal :</label>
-            <select id="animal">
+        <div class="control-group">
+          <label>Choisir le menu :</label>
+          <select id="food-select">
+            <optgroup label="🐌 Animaux & Insectes">
               <option value="sluuuurpp glouuuup schliiick">Limace géante africaine</option>
               <option value="glop glop plouchhh schluuurrp">Ver marin perforateur de bois</option>
               <option value="bzzzchhh plip plop sliiibber">Escargot baveux des marais</option>
@@ -368,37 +286,8 @@
               <option value="glub schhh plop slorrrrp">Larve de crabes ou homards</option>
               <option value="squishhh glop blop plip">Tique gorgée de sang</option>
               <option value="crlch sluuuurp blop frrrslip">Écrevisse américaine</option>
-            </select>
-          </div>
-
-          <div>
-            <label for="countAnimal">Nombre de répétitions :</label>
-            <input type="number" id="countAnimal" min="1" max="50" value="5">
-          </div>
-
-          <div class="actions">
-            <button id="generateAnimal" style="background:#f59e0b;color:white;">Générer le défi</button>
-          </div>
-
-          <div id="challengeAnimal" style="display:none; margin-top:15px;">
-            <div class="message-box" style="background:#fef3c7;">
-              <p><strong>Lien du défi généré :</strong></p>
-              <div class="copy-group">
-                <input type="text" id="linkAnimal" readonly>
-                <button id="copyLinkAnimalBtn">📋 Copier le lien</button>
-              </div>
-            </div>
-            <div class="actions">
-              <button id="shareAnimalWhatsapp" style="background:#25d366;color:white;">📱 Envoyer sur WhatsApp</button>
-            </div>
-          </div>
-        </div>
-
-        <div id="food" class="tab-content">
-          <h2 style="font-size:1.1rem;margin-top:15px;">Nourritures Dégoûtantes</h2>
-          <div>
-            <label for="foodItem">Choisir une nourriture :</label>
-            <select id="foodItem">
+            </optgroup>
+            <optgroup label="🍽️ Nourriture Immonde">
               <option value="miam slurrrrp crunch glop">Œufs de cent ans pourris</option>
               <option value="gloub schluup beurk plop">Fromage au lait cru moisi</option>
               <option value="squishhh munch glurrp slibber">Haggis écossais baveux</option>
@@ -419,292 +308,273 @@
               <option value="glibb plop slurrp beurk">Tête de mouton bouillie</option>
               <option value="crunch gloop miam schluup">Grillons frits croustillants</option>
               <option value="schlick glop beurkkk slibber">Soupe de sang coagulé</option>
-            </select>
-          </div>
+            </optgroup>
+          </select>
+        </div>
 
-          <div>
-            <label for="countFood">Nombre de répétitions :</label>
-            <input type="number" id="countFood" min="1" max="50" value="5">
-          </div>
+        <div class="control-group">
+          <label>Nombre de répétitions (1-50) :</label>
+          <input type="number" id="food-reps" value="5" min="1" max="50">
+        </div>
 
-          <div class="actions">
-            <button id="generateFood" style="background:#f59e0b;color:white;">Générer le défi</button>
-          </div>
+        <button class="btn btn-generate" onclick="generateFoodChallenge()">
+          ✨ Créer le lien du défi
+        </button>
 
-          <div id="challengeFood" style="display:none; margin-top:15px;">
-            <div class="message-box" style="background:#fef3c7;">
-              <p><strong>Lien du défi généré :</strong></p>
-              <div class="copy-group">
-                <input type="text" id="linkFood" readonly>
-                <button id="copyLinkFoodBtn">📋 Copier le lien</button>
-              </div>
-            </div>
-            <div class="actions">
-              <button id="shareFoodWhatsapp" style="background:#25d366;color:white;">📱 Envoyer sur WhatsApp</button>
-            </div>
-          </div>
+        <div id="result-food" class="hidden" style="margin-top:20px; border-top: 1px solid #ddd; padding-top:15px;">
+          <label>Lien généré :</label>
+          <input type="text" id="food-link-input" readonly onclick="this.select()" style="margin-bottom:10px; font-size:12px; color:#666;">
+          
+          <button class="btn btn-copy" onclick="copyLink()">
+            📋 Copier le lien
+          </button>
+          <button class="btn btn-whatsapp" onclick="shareFoodWhatsapp()">
+            📱 Envoyer à Ronan
+          </button>
         </div>
       </div>
     </div>
-
   </div>
 
-  <script>
-    const TARGET_WHATSAPP_NUMBER = "33781937228";
+  <div id="challenge-interface" class="app-container hidden">
+    <div class="card">
+      <h1>🤡 Défi de Ronan 🤡</h1>
+      <h2 style="justify-content: center; color:#333;" id="challenge-title">...</h2>
+      
+      <div class="note">
+        ⚠️ Tape la phrase EXACTEMENT. Une erreur = Zéro ! Pas de copier-coller.
+      </div>
 
-    function base64EncodeUnicode(str) {
-      return btoa(encodeURIComponent(str).replace(/%([0-9A-F]{2})/g, function(match, p1) {
-        return String.fromCharCode('0x' + p1);
-      }));
+      <div class="control-group">
+        <label>Phrase à recopier :</label>
+        <div id="challenge-phrase-display" class="challenge-phrase"></div>
+      </div>
+
+      <div class="progress-bar" id="challenge-progress">0 / 0</div>
+
+      <textarea id="challenge-input" placeholder="Tape ici..." autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"></textarea>
+      
+      <div id="challenge-error" class="error-msg"></div>
+      <div id="challenge-success" class="success-msg"></div>
+    </div>
+  </div>
+
+<script>
+  const WHATSAPP_NUMBER = "33781937228";
+
+  // ==========================================
+  // UTILITAIRES
+  // ==========================================
+  function base64EncodeUnicode(str) {
+    return btoa(encodeURIComponent(str).replace(/%([0-9A-F]{2})/g, function(match, p1) {
+      return String.fromCharCode('0x' + p1);
+    }));
+  }
+  
+  function base64DecodeUnicode(str) {
+    return decodeURIComponent(Array.prototype.map.call(atob(str), function(c) {
+      return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+    }).join(''));
+  }
+
+  function switchTab(tabId, btn) {
+    document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.nav-tab').forEach(b => b.classList.remove('active'));
+    document.getElementById(tabId).classList.add('active');
+    btn.classList.add('active');
+  }
+
+  // ==========================================
+  // LOGIQUE POSITIONS
+  // ==========================================
+  function updatePreview() {
+    const action = document.getElementById('pos-action').value;
+    const dir = document.getElementById('pos-dir').value;
+    let text = "";
+
+    // Grammaire intelligente
+    if (action === "static") {
+      text = `Met la tête à ${dir}`;
+    } else if (action === "rotate") {
+      if (dir === "gauche" || dir === "droite") {
+        text = `Tourne la tête vers la ${dir}`;
+      } else {
+        text = `Tourne la tête ${dir}`; // ex: Tourne la tête face
+      }
+    } else if (action === "profile") {
+      text = `Mets-toi de profil ${dir}`;
     }
+
+    document.getElementById('pos-preview-text').innerText = text;
+    return text;
+  }
+
+  function setRandomPos() {
+    const actions = ["static", "rotate", "profile"];
+    const dirs = ["face", "gauche", "droite", "arrière"];
     
-    function base64DecodeUnicode(str) {
-      return decodeURIComponent(Array.prototype.map.call(atob(str), function(c) {
-        return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
-      }).join(''));
-    }
+    // Sélection aléatoire
+    const randAction = actions[Math.floor(Math.random() * actions.length)];
+    const randDir = dirs[Math.floor(Math.random() * dirs.length)];
 
-    let challengeState = {
-      phrase: '',
-      reps: 0,
-      completed: 0
-    };
+    // Mise à jour des select
+    document.getElementById('pos-action').value = randAction;
+    document.getElementById('pos-dir').value = randDir;
+    
+    updatePreview();
+  }
 
-    const randomVariations = [
-      "arrière profil gauche",
-      "arrière profil droit",
-      "arrière tourne ta tête à gauche",
-      "arrière tourne ta tête à droite",
-      "arrière tourne ta tête face",
-      "arrière simple"
-    ];
+  function sendPosWhatsapp() {
+    const text = updatePreview();
+    const url = `https://api.whatsapp.com/send?phone=${WHATSAPP_NUMBER}&text=${encodeURIComponent(text)}`;
+    window.open(url, '_blank');
+  }
 
-    function showMainTab(id) {
-      document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
-      const el = document.getElementById(id);
-      if (el) el.classList.add('active');
+  // ==========================================
+  // LOGIQUE GENERATEUR DE DEFI (MAITRE)
+  // ==========================================
+  function generateFoodChallenge() {
+    const select = document.getElementById('food-select');
+    const phrase = select.value;
+    const name = select.selectedOptions[0].text;
+    const reps = document.getElementById('food-reps').value;
 
-      document.querySelectorAll('#mainNav .tab').forEach(btn => {
-        if (btn.dataset.target === id) btn.classList.add('active');
-        else btn.classList.remove('active');
-      });
-    }
+    const data = { phrase, reps, name };
+    const jsonStr = JSON.stringify(data);
+    const encoded = base64EncodeUnicode(jsonStr);
+    
+    // Construction du lien
+    const link = `${window.location.origin}${window.location.pathname}?challenge=${encoded}`;
+    
+    // Affichage
+    document.getElementById('food-link-input').value = link;
+    document.getElementById('result-food').classList.remove('hidden');
+    
+    // Scroll vers le résultat
+    document.getElementById('result-food').scrollIntoView({behavior: "smooth"});
+  }
 
-    function showRepasSubTab(id) {
-      document.querySelectorAll('#repas .tabs .tab').forEach(btn => {
-        if (btn.dataset.sub === id) btn.classList.add('active');
-        else btn.classList.remove('active');
-      });
-      document.querySelectorAll('#repas > .container > .tab-content').forEach(c => c.classList.remove('active'));
-      const content = document.getElementById(id);
-      if (content) content.classList.add('active');
-    }
+  function copyLink() {
+    const copyText = document.getElementById("food-link-input");
+    copyText.select();
+    copyText.setSelectionRange(0, 99999); 
+    navigator.clipboard.writeText(copyText.value);
+    alert("✅ Lien copié !");
+  }
 
-    function messageFor(pos) {
-      return `Met la tête à ${pos}`;
-    }
+  function shareFoodWhatsapp() {
+    const link = document.getElementById("food-link-input").value;
+    const select = document.getElementById('food-select');
+    const name = select.selectedOptions[0].text;
+    const reps = document.getElementById('food-reps').value;
+    const phrase = select.value;
 
-    function setPosition(pos) {
-      window.currentPosition = pos;
-      document.getElementById("message").innerText = messageFor(pos);
-    }
+    const msg = `🤡 DÉFI REPAS 🤡\n\n🍽️ Menu: ${name}\n🔄 Répétitions: ${reps} fois\n\nRonan, clique sur le lien et recopie EXACTEMENT les onomatopées ("${phrase}") ${reps} fois. Une erreur et tout s'efface !\n\n👇 LE LIEN DU DÉFI 👇\n${link}`;
+    
+    window.open(`https://api.whatsapp.com/send?phone=${WHATSAPP_NUMBER}&text=${encodeURIComponent(msg)}`, '_blank');
+  }
 
-    function randomPosition() {
-      const randomPos = randomVariations[Math.floor(Math.random() * randomVariations.length)];
-      window.currentPosition = randomPos;
-      document.getElementById("message").innerText = `Met la tête à ${randomPos}`;
-      alert("🎲 Position aléatoire choisie : " + randomPos + " !");
-    }
+  // ==========================================
+  // LOGIQUE JEU DE SAISIE (ESCLAVE)
+  // ==========================================
+  let gameState = {
+    target: "",
+    repsTotal: 0,
+    repsDone: 0
+  };
 
-    function sendWhatsApp() {
-      let customText = document.getElementById('customMessage').value.trim();
-      let textToSend = customText ? customText : messageFor(window.currentPosition || 'face');
-      window.open(`https://api.whatsapp.com/send?phone=${TARGET_WHATSAPP_NUMBER}&text=${encodeURIComponent(textToSend)}`, '_blank');
-    }
+  function initChallengeMode() {
+    const params = new URLSearchParams(window.location.search);
+    const challengeCode = params.get('challenge');
 
-    function requestJoke() {
-      const jokeMessage = "Salut Ronan, raconte-moi une blague ! 🤡";
-      window.open(`https://api.whatsapp.com/send?phone=${TARGET_WHATSAPP_NUMBER}&text=${encodeURIComponent(jokeMessage)}`, '_blank');
-    }
-
-    function generateChallengeLink(dataObj) {
-      const json = JSON.stringify(dataObj);
-      const encoded = base64EncodeUnicode(json);
-      return `${window.location.origin}${window.location.pathname}?challenge=${encoded}`;
-    }
-
-    function copyToClipboard(text) {
-      if (!navigator.clipboard) {
-        const ta = document.createElement('textarea');
-        ta.value = text;
-        ta.style.position = 'fixed';
-        ta.style.left = '-9999px';
-        document.body.appendChild(ta);
-        ta.select();
-        document.execCommand('copy');
-        document.body.removeChild(ta);
-        return;
-      }
-      navigator.clipboard.writeText(text);
-    }
-
-    function activateChallengeModeFromParams() {
-      const params = new URLSearchParams(window.location.search);
-      const challenge = params.get('challenge');
-      if (!challenge) return false;
-
+    if (challengeCode) {
       try {
-        const data = JSON.parse(base64DecodeUnicode(challenge));
-        challengeState.phrase = data.phrase;
-        challengeState.reps = Number(data.reps) || 0;
-        challengeState.completed = 0;
+        // Décoder les données
+        const decoded = base64DecodeUnicode(challengeCode);
+        const data = JSON.parse(decoded);
 
-        document.querySelector('body').innerHTML = `
-          <div style="min-height:100vh;display:flex;align-items:center;justify-content:center;padding:15px;background:#fff;">
-            <div style="max-width:900px;width:100%;background:white;border-radius:15px;box-shadow:0 4px 12px rgba(0,0,0,0.2);padding:15px;">
-              <h1 style="font-size:1.5rem;color:#ef4444;margin-bottom:15px;word-wrap:break-word;">🤡 Défi de Ronan : ${escapeHtml(data.name || '')} 🤡</h1>
-              <div style="border:2px dashed #111;background:#fef3c7;padding:12px;border-radius:10px;margin-bottom:15px;">
-                <p style="font-weight:bold;margin-bottom:8px;font-size:14px;">Tape cette phrase <span id="challengeReps">${challengeState.reps}</span> fois :</p>
-                <p id="challengePhrase" style="font-size:1.2rem;color:#ef4444;font-weight:bold;margin:10px 0;word-wrap:break-word;">${escapeHtml(challengeState.phrase)}</p>
-                <p style="color:#666;font-size:0.9rem;">⚠️ Une seule erreur = tout recommence à zéro !</p>
-              </div>
-              <div style="margin:15px 0;">
-                <p style="font-weight:bold;margin-bottom:8px;font-size:14px;">Progression : <span id="challengeProgress">0 / ${challengeState.reps}</span></p>
-              </div>
-              <textarea id="challengeInput" placeholder="Commence à taper ici..." style="min-height:120px;width:100%;padding:12px;border:2px solid #111;border-radius:8px;font-size:16px;font-family:monospace;resize:vertical;"></textarea>
-              <p id="challengeError" style="color:red;font-weight:bold;margin-top:10px;font-size:14px;"></p>
-              <p id="challengeSuccess" style="color:green;font-weight:bold;margin-top:10px;font-size:14px;"></p>
-            </div>
-          </div>
-        `;
+        // Masquer l'interface maître, afficher le jeu
+        document.getElementById('main-interface').classList.add('hidden');
+        document.getElementById('challenge-interface').classList.remove('hidden');
 
-        const input = document.getElementById('challengeInput');
-        const error = document.getElementById('challengeError');
-        const success = document.getElementById('challengeSuccess');
-        const progress = document.getElementById('challengeProgress');
+        // Configurer le jeu
+        gameState.target = data.phrase;
+        gameState.repsTotal = parseInt(data.reps);
+        gameState.repsDone = 0;
 
-        input.addEventListener('input', function() {
-          const trimmed = this.value.trim();
-          if (trimmed === challengeState.phrase) {
-            challengeState.completed++;
-            this.value = '';
-            error.textContent = '';
-            progress.textContent = `${challengeState.completed} / ${challengeState.reps}`;
-            if (challengeState.completed === challengeState.reps) {
-              success.textContent = "🎉 Bravo Ronan, défi réussi ! 🎉";
-              this.disabled = true;
-              this.style.background = '#d1fae5';
-            }
-          } else if (trimmed.length > 0 && !challengeState.phrase.startsWith(trimmed)) {
-            error.textContent = "❌ Mauvaise frappe ! Tout recommence à zéro !";
-            this.value = '';
-            challengeState.completed = 0;
-            progress.textContent = `0 / ${challengeState.reps}`;
-            setTimeout(() => { error.textContent = ''; }, 2000);
-          }
-        });
+        document.getElementById('challenge-title').innerText = data.name;
+        document.getElementById('challenge-phrase-display').innerText = data.phrase;
+        updateProgress();
 
-        input.addEventListener('paste', function(e) {
-          e.preventDefault();
-          error.textContent = "❌ Copier-coller interdit ! Tu dois taper toi-même !";
-          setTimeout(() => { error.textContent = ''; }, 3000);
-        });
+        setupInputListener();
 
-        input.focus();
-        return true;
-      } catch (err) {
-        console.error('Erreur en chargeant le défi', err);
-        return false;
+      } catch (e) {
+        alert("Lien invalide ou corrompu.");
+        window.location.href = window.location.pathname; // Retour à l'accueil
       }
     }
+  }
 
-    function escapeHtml(unsafe) {
-      return String(unsafe)
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;")
-        .replace(/"/g, "&quot;")
-        .replace(/'/g, "&#039;");
-    }
+  function updateProgress() {
+    document.getElementById('challenge-progress').innerText = `${gameState.repsDone} / ${gameState.repsTotal}`;
+  }
 
-    document.addEventListener('DOMContentLoaded', function() {
-      if (activateChallengeModeFromParams()) {
+  function setupInputListener() {
+    const input = document.getElementById('challenge-input');
+    const errorDisplay = document.getElementById('challenge-error');
+    const successDisplay = document.getElementById('challenge-success');
+
+    // Interdire le copier-coller
+    input.addEventListener('paste', (e) => {
+      e.preventDefault();
+      errorDisplay.innerText = "❌ TRICHEUR ! Pas de copier-coller !";
+      setTimeout(() => errorDisplay.innerText = "", 2000);
+    });
+
+    input.addEventListener('input', function() {
+      const val = this.value;
+      
+      // Cas de succès pour une répétition
+      if (val === gameState.target) {
+        gameState.repsDone++;
+        this.value = ""; // Reset champ
+        updateProgress();
+
+        // Victoire totale ?
+        if (gameState.repsDone >= gameState.repsTotal) {
+          successDisplay.innerText = "🎉 DÉFI TERMINÉ ! BRAVO LE BOUFFON ! 🎉";
+          this.disabled = true;
+          this.style.background = "#d1fae5";
+        }
         return;
       }
 
-      document.querySelectorAll('#mainNav .tab').forEach(btn => {
-        btn.addEventListener('click', () => {
-          showMainTab(btn.dataset.target);
-        });
-      });
-
-      document.querySelectorAll('#repas .tabs .tab').forEach(btn => {
-        btn.addEventListener('click', () => {
-          showRepasSubTab(btn.dataset.sub);
-        });
-      });
-
-      window.currentPosition = 'face';
-      setPosition('face');
-
-      document.getElementById('sendWhatsappBtn').addEventListener('click', sendWhatsApp);
-      document.getElementById('jokeBtn').addEventListener('click', requestJoke);
-
-      document.getElementById("generateAnimal").addEventListener("click", function() {
-        const animal = document.getElementById("animal").value;
-        const animalName = document.getElementById("animal").selectedOptions[0].text;
-        const count = parseInt(document.getElementById("countAnimal").value, 10) || 1;
+      // Vérification caractère par caractère
+      // Si ce qu'on tape ne correspond pas au début de la phrase cible...
+      if (!gameState.target.startsWith(val)) {
+        // ERREUR FATALE
+        this.value = "";
+        gameState.repsDone = 0; // Reset total
+        updateProgress();
         
-        const challengeData = { phrase: animal, reps: count, name: animalName };
-        const link = generateChallengeLink(challengeData);
+        errorDisplay.innerText = "❌ ERREUR ! TOUT RECOMMENCE À ZÉRO ! 😈";
         
-        document.getElementById("linkAnimal").value = link;
-        document.getElementById("challengeAnimal").style.display = "block";
-      });
-
-      document.getElementById('copyLinkAnimalBtn').addEventListener('click', function() {
-        const link = document.getElementById("linkAnimal").value;
-        copyToClipboard(link);
-        alert("✅ Lien copié !");
-      });
-
-      document.getElementById('shareAnimalWhatsapp').addEventListener('click', function() {
-        const link = document.getElementById("linkAnimal").value;
-        const animalName = document.getElementById("animal").selectedOptions[0].text;
-        const count = document.getElementById("countAnimal").value;
-        const animal = document.getElementById("animal").value;
-        const message = `🤡 REPAS DE RONAN 🤡\n\n🐌 Animal: ${animalName}\n📝 Répétitions: ${count}×\n\n🎯 Onomatopées à recopier:\n"${animal}"\n\nClique sur le lien et tape EXACTEMENT cette phrase ${count} fois (une erreur = tout recommence à zéro!) :\n\n${link}`;
-        window.open(`https://api.whatsapp.com/send?phone=${TARGET_WHATSAPP_NUMBER}&text=${encodeURIComponent(message)}`, '_blank');
-      });
-
-      document.getElementById("generateFood").addEventListener("click", function() {
-        const food = document.getElementById("foodItem").value;
-        const foodName = document.getElementById("foodItem").selectedOptions[0].text;
-        const count = parseInt(document.getElementById("countFood").value, 10) || 1;
-        
-        const challengeData = { phrase: food, reps: count, name: foodName };
-        const link = generateChallengeLink(challengeData);
-        
-        document.getElementById("linkFood").value = link;
-        document.getElementById("challengeFood").style.display = "block";
-      });
-
-      document.getElementById('copyLinkFoodBtn').addEventListener('click', function() {
-        const link = document.getElementById("linkFood").value;
-        copyToClipboard(link);
-        alert("✅ Lien copié !");
-      });
-
-      document.getElementById('shareFoodWhatsapp').addEventListener('click', function() {
-        const link = document.getElementById("linkFood").value;
-        const foodName = document.getElementById("foodItem").selectedOptions[0].text;
-        const count = document.getElementById("countFood").value;
-        const food = document.getElementById("foodItem").value;
-        const message = `🤡 REPAS DE RONAN 🤡\n\n🍽️ Nourriture: ${foodName}\n📝 Répétitions: ${count}×\n\n🎯 Onomatopées à recopier:\n"${food}"\n\nClique sur le lien et tape EXACTEMENT cette phrase ${count} fois (une erreur = tout recommence à zéro!) :\n\n${link}`;
-        window.open(`https://api.whatsapp.com/send?phone=${TARGET_WHATSAPP_NUMBER}&text=${encodeURIComponent(message)}`, '_blank');
-      });
-
+        // Animation de secousse
+        this.style.borderColor = "red";
+        setTimeout(() => {
+          this.style.borderColor = "#e5e7eb";
+          errorDisplay.innerText = "";
+        }, 1500);
+      }
     });
-  </script>
+  }
+
+  // Démarrage
+  window.onload = function() {
+    initChallengeMode();
+    updatePreview(); // Init texte par défaut
+  };
+
+</script>
 </body>
 </html>
