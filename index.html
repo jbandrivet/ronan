@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Soumis Ronan le Bouffon</title>
+  <title>Soumis Ronan le Bouffon v3</title>
   <style>
     :root {
       --primary: #3b82f6;   /* Bleu */
@@ -109,7 +109,7 @@
       padding: 14px;
       border: 2px solid #e5e7eb;
       border-radius: 12px;
-      font-size: 16px; /* Empêche le zoom sur iOS */
+      font-size: 16px;
       background: #fff;
       transition: border-color 0.2s;
       font-family: inherit;
@@ -166,6 +166,18 @@
       font-weight: bold;
       font-size: 1.1rem;
       word-wrap: break-word;
+    }
+    
+    /* Nouveau style pour voir l'onomatopée du maitre */
+    .ono-display-master {
+      background: #f3f4f6;
+      border-left: 4px solid var(--secondary);
+      padding: 15px;
+      margin-bottom: 15px;
+      font-family: monospace;
+      font-size: 0.95rem;
+      color: #4b5563;
+      border-radius: 0 8px 8px 0;
     }
 
     .note {
@@ -228,6 +240,7 @@
             <option value="static">Met la tête à...</option>
             <option value="rotate">Tourne la tête...</option>
             <option value="profile">Mets-toi de profil...</option>
+            <option value="back_profile">Arrière profil...</option>
           </select>
         </div>
 
@@ -264,7 +277,7 @@
 
         <div class="control-group">
           <label>Choisir le menu :</label>
-          <select id="food-select">
+          <select id="food-select" onchange="updateFoodPreview()">
             <optgroup label="🐌 Animaux & Insectes">
               <option value="sluuuurpp glouuuup schliiick">Limace géante africaine</option>
               <option value="glop glop plouchhh schluuurrp">Ver marin perforateur de bois</option>
@@ -310,6 +323,13 @@
               <option value="schlick glop beurkkk slibber">Soupe de sang coagulé</option>
             </optgroup>
           </select>
+        </div>
+
+        <div class="control-group">
+          <label>Ce que Ronan devra écrire :</label>
+          <div id="food-preview-ono" class="ono-display-master">
+            ...
+          </div>
         </div>
 
         <div class="control-group">
@@ -399,10 +419,13 @@
       if (dir === "gauche" || dir === "droite") {
         text = `Tourne la tête vers la ${dir}`;
       } else {
-        text = `Tourne la tête ${dir}`; // ex: Tourne la tête face
+        text = `Tourne la tête ${dir}`;
       }
     } else if (action === "profile") {
       text = `Mets-toi de profil ${dir}`;
+    } else if (action === "back_profile") {
+      // Nouvelle logique pour Arrière Profil
+      text = `Arrière profil ${dir}`;
     }
 
     document.getElementById('pos-preview-text').innerText = text;
@@ -410,7 +433,7 @@
   }
 
   function setRandomPos() {
-    const actions = ["static", "rotate", "profile"];
+    const actions = ["static", "rotate", "profile", "back_profile"];
     const dirs = ["face", "gauche", "droite", "arrière"];
     
     // Sélection aléatoire
@@ -433,6 +456,13 @@
   // ==========================================
   // LOGIQUE GENERATEUR DE DEFI (MAITRE)
   // ==========================================
+  function updateFoodPreview() {
+    // Afficher l'onomatopée dès la sélection pour le maitre
+    const select = document.getElementById('food-select');
+    const val = select.value;
+    document.getElementById('food-preview-ono').innerText = val;
+  }
+
   function generateFoodChallenge() {
     const select = document.getElementById('food-select');
     const phrase = select.value;
@@ -572,7 +602,8 @@
   // Démarrage
   window.onload = function() {
     initChallengeMode();
-    updatePreview(); // Init texte par défaut
+    updatePreview(); // Init texte par défaut Positions
+    updateFoodPreview(); // Init texte par défaut Repas
   };
 
 </script>
