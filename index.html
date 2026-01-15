@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Soumis Ronan le Bouffon v5</title>
+  <title>Soumis Ronan le Bouffon Final v9</title>
   <style>
     :root { --primary: #3b82f6; --secondary: #f59e0b; --danger: #ef4444; --success: #10b981; --dark: #1f2937; }
     * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -60,21 +60,17 @@
         <div class="control-group">
           <label>Action demandée :</label>
           <select id="pos-action" onchange="updateDirectionOptions()">
-            <option value="static">Met la tête à...</option>
-            <option value="rotate">Tourne la tête...</option>
+            <option value="static">Met la tête...</option>
+            <option value="rotate">Tourne/Penche la tête...</option>
             <option value="profile">Mets-toi de profil...</option>
             <option value="back_profile">Arrière profil...</option>
           </select>
         </div>
 
         <div class="control-group">
-          <label>Direction / Position :</label>
+          <label>Direction / Côté :</label>
           <select id="pos-dir" onchange="updatePreview()">
-            <option value="face">Face</option>
-            <option value="gauche">Gauche ⬅️</option>
-            <option value="droite">Droite ➡️</option>
-            <option value="arrière">Arrière (Plafond) 🔼</option>
-          </select>
+            </select>
         </div>
 
         <div class="message-preview" id="pos-preview-text">Met la tête à face</div>
@@ -183,25 +179,24 @@
     {val: 'face', text: 'Face'},
     {val: 'gauche', text: 'Gauche ⬅️'},
     {val: 'droite', text: 'Droite ➡️'},
-    {val: 'arrière', text: 'Arrière (Plafond) 🔼'}
+    {val: 'arrière', text: 'En arrière (Plafond) 🔼'}
   ];
 
   function updateDirectionOptions() {
     const action = document.getElementById('pos-action').value;
     const currentDir = directionSelect.value;
     
-    // Vider le select
     directionSelect.innerHTML = '';
-
     let allowed = [];
     
-    // NOUVELLE LOGIQUE
+    // --- LOGIQUE FINALE ---
     if (action === 'profile' || action === 'back_profile') {
-      // Profil : On ne peut pas être de Face
-      // Mais on peut regarder à Gauche, Droite, ou Arrière (Plafond)
-      allowed = ['gauche', 'droite', 'arrière'];
-    } else {
-      // Tête ou Tourner : Tout est permis
+      // Pour TOUS les profils (normal ou arrière) :
+      // SEULEMENT Gauche ou Droite. (Arrière supprimé car redondant, Face impossible)
+      allowed = ['gauche', 'droite'];
+    } 
+    else {
+      // Pour le reste (Met la tête / Tourne la tête) : Tout est permis
       allowed = ['face', 'gauche', 'droite', 'arrière'];
     }
 
@@ -215,7 +210,6 @@
       }
     });
 
-    // Essayer de garder la sélection précédente si elle est valide
     if (allowed.includes(currentDir)) {
       directionSelect.value = currentDir;
     } else {
@@ -231,19 +225,19 @@
     let text = "";
 
     if (action === "static") {
-      text = `Met la tête à ${dir}`;
-    } else if (action === "rotate") {
-      // Grammaire pour "Tourne la tête"
-      if (dir === "gauche" || dir === "droite") {
-        text = `Tourne la tête vers la ${dir}`;
-      } else if (dir === "arrière") {
-        text = `Tourne la tête en arrière (plafond)`;
-      } else {
-        text = `Tourne la tête ${dir}`;
-      }
-    } else if (action === "profile") {
+      if (dir === "arrière") text = "Met la tête en arrière";
+      else text = `Met la tête à ${dir}`;
+    } 
+    else if (action === "rotate") {
+      if (dir === "gauche" || dir === "droite") text = `Tourne la tête vers la ${dir}`;
+      else if (dir === "arrière") text = `Penche la tête en arrière (plafond)`;
+      else text = `Tourne la tête ${dir}`;
+    } 
+    else if (action === "profile") {
+      // Arrière n'est plus possible ici, donc code simplifié
       text = `Mets-toi de profil ${dir}`;
-    } else if (action === "back_profile") {
+    } 
+    else if (action === "back_profile") {
       text = `Arrière profil ${dir}`;
     }
 
@@ -255,14 +249,14 @@
     const actionSelect = document.getElementById('pos-action');
     const actions = ["static", "rotate", "profile", "back_profile"];
     
-    // 1. Choisir une action au hasard
+    // 1. Action au hasard
     const randAction = actions[Math.floor(Math.random() * actions.length)];
     actionSelect.value = randAction;
     
-    // 2. Mettre à jour les directions possibles pour cette action
+    // 2. Maj des options possibles
     updateDirectionOptions();
     
-    // 3. Choisir une direction parmi celles qui restent disponibles
+    // 3. Direction au hasard
     const availableDirs = Array.from(directionSelect.options).map(o => o.value);
     const randDir = availableDirs[Math.floor(Math.random() * availableDirs.length)];
     directionSelect.value = randDir;
@@ -275,7 +269,7 @@
     window.open(`https://api.whatsapp.com/send?phone=${WHATSAPP_NUMBER}&text=${encodeURIComponent(text)}`, '_blank');
   }
 
-  // --- LOGIQUE REPAS ---
+  // --- LOGIQUE REPAS & JEU (inchangée) ---
   function updateFoodPreview() {
     document.getElementById('food-preview-ono').innerText = document.getElementById('food-select').value;
   }
@@ -296,9 +290,7 @@
     window.open(`https://api.whatsapp.com/send?phone=${WHATSAPP_NUMBER}&text=${encodeURIComponent(msg)}`, '_blank');
   }
 
-  // --- LOGIQUE JEU ---
   let gameState = { target: "", repsTotal: 0, repsDone: 0 };
-
   function initChallenge() {
     const params = new URLSearchParams(window.location.search);
     const challengeCode = params.get('challenge');
@@ -324,9 +316,7 @@
     const input = document.getElementById('challenge-input');
     const err = document.getElementById('challenge-error');
     const succ = document.getElementById('challenge-success');
-
     input.addEventListener('paste', e => { e.preventDefault(); err.innerText = "❌ PAS DE COPIER-COLLER !"; setTimeout(()=>err.innerText="", 2000); });
-    
     input.addEventListener('input', function() {
       if (this.value === gameState.target) {
         gameState.repsDone++; this.value = ""; updateGameProgress();
@@ -341,16 +331,14 @@
     });
   }
 
-  // --- UTILS ---
   function base64EncodeUnicode(str) { return btoa(encodeURIComponent(str).replace(/%([0-9A-F]{2})/g, (match, p1) => String.fromCharCode('0x' + p1))); }
   function base64DecodeUnicode(str) { return decodeURIComponent(Array.prototype.map.call(atob(str), c => '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2)).join('')); }
   function switchTab(id, btn) { document.querySelectorAll('.tab-content, .nav-tab').forEach(e => e.classList.remove('active')); document.getElementById(id).classList.add('active'); btn.classList.add('active'); }
   function copyLink() { const el = document.getElementById("food-link-input"); el.select(); navigator.clipboard.writeText(el.value); alert("✅ Copié !"); }
 
-  // START
   window.onload = function() {
     initChallenge();
-    updateDirectionOptions(); // Init logique filtrage
+    updateDirectionOptions();
     updateFoodPreview();
   };
 </script>
