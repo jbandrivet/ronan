@@ -3,220 +3,43 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Soumis Ronan le Bouffon v3</title>
+  <title>Soumis Ronan le Bouffon v5</title>
   <style>
-    :root {
-      --primary: #3b82f6;   /* Bleu */
-      --secondary: #f59e0b; /* Jaune/Orange */
-      --danger: #ef4444;    /* Rouge */
-      --success: #10b981;   /* Vert */
-      --dark: #1f2937;
-      --light: #f3f4f6;
-    }
-
+    :root { --primary: #3b82f6; --secondary: #f59e0b; --danger: #ef4444; --success: #10b981; --dark: #1f2937; }
     * { box-sizing: border-box; margin: 0; padding: 0; }
-    
     body {
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
       background: #e5e7eb;
       background-image: repeating-linear-gradient(45deg, #e5e7eb 25%, #f3f4f6 25%, #f3f4f6 50%, #e5e7eb 50%, #e5e7eb 75%, #f3f4f6 75%, #f3f4f6 100%);
       background-size: 20px 20px;
       min-height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      padding: 10px;
-      color: var(--dark);
+      display: flex; justify-content: center; align-items: center; padding: 10px; color: var(--dark);
     }
-
-    .app-container {
-      max-width: 600px;
-      width: 100%;
-    }
-
-    /* --- CARDS & LAYOUT --- */
+    .app-container { max-width: 600px; width: 100%; }
     .card {
-      background: white;
-      border-radius: 16px;
-      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-      padding: 20px;
-      margin-bottom: 20px;
-      border: 1px solid rgba(0,0,0,0.05);
+      background: white; border-radius: 16px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+      padding: 20px; margin-bottom: 20px; border: 1px solid rgba(0,0,0,0.05);
     }
-
-    h1 {
-      font-size: 1.5rem;
-      text-align: center;
-      color: var(--danger);
-      margin-bottom: 15px;
-      font-weight: 800;
-      text-transform: uppercase;
-      letter-spacing: -0.5px;
-    }
-
-    h2 {
-      font-size: 1.1rem;
-      margin-bottom: 15px;
-      color: var(--primary);
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    /* --- NAVIGATION TABS --- */
-    .nav-tabs {
-      display: flex;
-      background: #e5e7eb;
-      padding: 4px;
-      border-radius: 12px;
-      margin-bottom: 20px;
-    }
-
-    .nav-tab {
-      flex: 1;
-      padding: 12px;
-      border: none;
-      background: transparent;
-      font-weight: 600;
-      cursor: pointer;
-      border-radius: 9px;
-      transition: all 0.2s ease;
-      font-size: 0.95rem;
-      color: #6b7280;
-    }
-
-    .nav-tab.active {
-      background: white;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-      color: var(--primary);
-    }
-
-    /* --- FORM ELEMENTS --- */
+    h1 { font-size: 1.5rem; text-align: center; color: var(--danger); margin-bottom: 15px; text-transform: uppercase; }
+    h2 { font-size: 1.1rem; margin-bottom: 15px; color: var(--primary); display: flex; align-items: center; gap: 8px; }
+    .nav-tabs { display: flex; background: #e5e7eb; padding: 4px; border-radius: 12px; margin-bottom: 20px; }
+    .nav-tab { flex: 1; padding: 12px; border: none; background: transparent; font-weight: 600; cursor: pointer; border-radius: 9px; transition: 0.2s; color: #6b7280; }
+    .nav-tab.active { background: white; box-shadow: 0 2px 4px rgba(0,0,0,0.1); color: var(--primary); }
     .control-group { margin-bottom: 15px; }
-    
-    label {
-      display: block;
-      font-size: 0.85rem;
-      font-weight: 700;
-      margin-bottom: 6px;
-      color: #374151;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-    }
-
-    select, input, textarea {
-      width: 100%;
-      padding: 14px;
-      border: 2px solid #e5e7eb;
-      border-radius: 12px;
-      font-size: 16px;
-      background: #fff;
-      transition: border-color 0.2s;
-      font-family: inherit;
-    }
-
-    select:focus, input:focus, textarea:focus {
-      border-color: var(--primary);
-      outline: none;
-    }
-
-    textarea {
-      resize: vertical;
-      min-height: 120px;
-      font-family: 'Courier New', Courier, monospace;
-    }
-
-    /* --- BUTTONS --- */
-    .btn {
-      width: 100%;
-      padding: 15px;
-      border: none;
-      border-radius: 12px;
-      font-weight: bold;
-      font-size: 1rem;
-      cursor: pointer;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      gap: 8px;
-      transition: transform 0.1s, filter 0.2s;
-      margin-bottom: 10px;
-      color: white;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-    }
-
-    .btn:active { transform: scale(0.98); }
-    
+    label { display: block; font-size: 0.85rem; font-weight: 700; margin-bottom: 6px; color: #374151; text-transform: uppercase; }
+    select, input, textarea { width: 100%; padding: 14px; border: 2px solid #e5e7eb; border-radius: 12px; font-size: 16px; background: #fff; }
+    .btn { width: 100%; padding: 15px; border: none; border-radius: 12px; font-weight: bold; font-size: 1rem; cursor: pointer; display: flex; justify-content: center; align-items: center; gap: 8px; margin-bottom: 10px; color: white; }
     .btn-whatsapp { background: #25d366; }
-    .btn-whatsapp:hover { background: #1ebc57; }
-    
     .btn-random { background: #8b5cf6; }
     .btn-generate { background: var(--secondary); }
     .btn-copy { background: var(--primary); }
-
-    /* --- PREVIEWS & FEEDBACK --- */
-    .message-preview {
-      background: #fffbeb;
-      border: 2px dashed #fcd34d;
-      color: #92400e;
-      padding: 15px;
-      border-radius: 12px;
-      margin: 15px 0;
-      text-align: center;
-      font-weight: bold;
-      font-size: 1.1rem;
-      word-wrap: break-word;
-    }
-    
-    /* Nouveau style pour voir l'onomatopée du maitre */
-    .ono-display-master {
-      background: #f3f4f6;
-      border-left: 4px solid var(--secondary);
-      padding: 15px;
-      margin-bottom: 15px;
-      font-family: monospace;
-      font-size: 0.95rem;
-      color: #4b5563;
-      border-radius: 0 8px 8px 0;
-    }
-
-    .note {
-      background: #eff6ff;
-      border-left: 4px solid var(--primary);
-      padding: 12px;
-      font-size: 0.85rem;
-      color: #1e40af;
-      margin-bottom: 15px;
-      border-radius: 4px;
-    }
-
-    /* --- UTILS --- */
-    .tab-content { display: none; animation: fadeIn 0.3s ease-out; }
-    .tab-content.active { display: block; }
-    .hidden { display: none !important; }
-
-    @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
-
-    /* --- CHALLENGE MODE SPECIFIC --- */
-    #challenge-interface {
-      text-align: center;
-    }
-    
-    .challenge-phrase {
-      font-family: monospace;
-      font-size: 1.1rem;
-      color: var(--danger);
-      background: #fee2e2;
-      padding: 10px;
-      border-radius: 8px;
-      word-break: break-all;
-      margin: 10px 0;
-    }
-    
-    .error-msg { color: var(--danger); font-weight: bold; min-height: 24px; }
-    .success-msg { color: var(--success); font-weight: bold; font-size: 1.2rem; }
-    .progress-bar { font-size: 1.2rem; font-weight: 800; color: var(--primary); margin: 10px 0; }
-
+    .message-preview { background: #fffbeb; border: 2px dashed #fcd34d; color: #92400e; padding: 15px; border-radius: 12px; margin: 15px 0; text-align: center; font-weight: bold; word-wrap: break-word; }
+    .ono-display-master { background: #f3f4f6; border-left: 4px solid var(--secondary); padding: 15px; margin-bottom: 15px; font-family: monospace; font-size: 0.95rem; color: #4b5563; border-radius: 0 8px 8px 0; }
+    .tab-content { display: none; } .tab-content.active { display: block; } .hidden { display: none !important; }
+    .challenge-phrase { font-family: monospace; color: var(--danger); background: #fee2e2; padding: 10px; border-radius: 8px; word-break: break-all; margin: 10px 0; }
+    .error-msg { color: var(--danger); font-weight: bold; min-height: 24px; text-align: center; }
+    .success-msg { color: var(--success); font-weight: bold; font-size: 1.2rem; text-align: center; }
+    .progress-bar { font-size: 1.2rem; font-weight: 800; color: var(--primary); margin: 10px 0; text-align: center;}
   </style>
 </head>
 <body>
@@ -236,7 +59,7 @@
         
         <div class="control-group">
           <label>Action demandée :</label>
-          <select id="pos-action" onchange="updatePreview()">
+          <select id="pos-action" onchange="updateDirectionOptions()">
             <option value="static">Met la tête à...</option>
             <option value="rotate">Tourne la tête...</option>
             <option value="profile">Mets-toi de profil...</option>
@@ -245,36 +68,25 @@
         </div>
 
         <div class="control-group">
-          <label>Direction :</label>
+          <label>Direction / Position :</label>
           <select id="pos-dir" onchange="updatePreview()">
             <option value="face">Face</option>
             <option value="gauche">Gauche ⬅️</option>
             <option value="droite">Droite ➡️</option>
-            <option value="arrière">Arrière 🔙</option>
+            <option value="arrière">Arrière (Plafond) 🔼</option>
           </select>
         </div>
 
-        <div class="message-preview" id="pos-preview-text">
-          Met la tête à face
-        </div>
+        <div class="message-preview" id="pos-preview-text">Met la tête à face</div>
 
-        <button class="btn btn-whatsapp" onclick="sendPosWhatsapp()">
-          📱 Envoyer l'ordre
-        </button>
-        
-        <button class="btn btn-random" onclick="setRandomPos()">
-          🎲 Position Aléatoire
-        </button>
+        <button class="btn btn-whatsapp" onclick="sendPosWhatsapp()">📱 Envoyer l'ordre</button>
+        <button class="btn btn-random" onclick="setRandomPos()">🎲 Position Aléatoire</button>
       </div>
     </div>
 
     <div id="tab-food" class="tab-content">
       <div class="card">
         <h2>🤢 Générateur de Défi</h2>
-        <div class="note">
-          <strong>Règle :</strong> Ronan devra recopier les onomatopées. Une seule erreur et tout s'efface !
-        </div>
-
         <div class="control-group">
           <label>Choisir le menu :</label>
           <select id="food-select" onchange="updateFoodPreview()">
@@ -327,30 +139,21 @@
 
         <div class="control-group">
           <label>Ce que Ronan devra écrire :</label>
-          <div id="food-preview-ono" class="ono-display-master">
-            ...
-          </div>
+          <div id="food-preview-ono" class="ono-display-master">...</div>
         </div>
 
         <div class="control-group">
-          <label>Nombre de répétitions (1-50) :</label>
+          <label>Répétitions (1-50) :</label>
           <input type="number" id="food-reps" value="5" min="1" max="50">
         </div>
 
-        <button class="btn btn-generate" onclick="generateFoodChallenge()">
-          ✨ Créer le lien du défi
-        </button>
+        <button class="btn btn-generate" onclick="generateFoodChallenge()">✨ Créer le lien du défi</button>
 
         <div id="result-food" class="hidden" style="margin-top:20px; border-top: 1px solid #ddd; padding-top:15px;">
           <label>Lien généré :</label>
           <input type="text" id="food-link-input" readonly onclick="this.select()" style="margin-bottom:10px; font-size:12px; color:#666;">
-          
-          <button class="btn btn-copy" onclick="copyLink()">
-            📋 Copier le lien
-          </button>
-          <button class="btn btn-whatsapp" onclick="shareFoodWhatsapp()">
-            📱 Envoyer à Ronan
-          </button>
+          <button class="btn btn-copy" onclick="copyLink()">📋 Copier le lien</button>
+          <button class="btn btn-whatsapp" onclick="shareFoodWhatsapp()">📱 Envoyer à Ronan</button>
         </div>
       </div>
     </div>
@@ -360,20 +163,10 @@
     <div class="card">
       <h1>🤡 Défi de Ronan 🤡</h1>
       <h2 style="justify-content: center; color:#333;" id="challenge-title">...</h2>
-      
-      <div class="note">
-        ⚠️ Tape la phrase EXACTEMENT. Une erreur = Zéro ! Pas de copier-coller.
-      </div>
-
-      <div class="control-group">
-        <label>Phrase à recopier :</label>
-        <div id="challenge-phrase-display" class="challenge-phrase"></div>
-      </div>
-
+      <div class="note" style="text-align: center;">⚠️ Tape la phrase EXACTEMENT.<br>Une erreur = Zéro !</div>
+      <div id="challenge-phrase-display" class="challenge-phrase"></div>
       <div class="progress-bar" id="challenge-progress">0 / 0</div>
-
       <textarea id="challenge-input" placeholder="Tape ici..." autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"></textarea>
-      
       <div id="challenge-error" class="error-msg"></div>
       <div id="challenge-success" class="success-msg"></div>
     </div>
@@ -382,49 +175,75 @@
 <script>
   const WHATSAPP_NUMBER = "33781937228";
 
-  // ==========================================
-  // UTILITAIRES
-  // ==========================================
-  function base64EncodeUnicode(str) {
-    return btoa(encodeURIComponent(str).replace(/%([0-9A-F]{2})/g, function(match, p1) {
-      return String.fromCharCode('0x' + p1);
-    }));
-  }
+  // --- LOGIQUE POSITIONS ET FILTRES ---
+  const directionSelect = document.getElementById('pos-dir');
   
-  function base64DecodeUnicode(str) {
-    return decodeURIComponent(Array.prototype.map.call(atob(str), function(c) {
-      return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
-    }).join(''));
+  // Options complètes
+  const allOptions = [
+    {val: 'face', text: 'Face'},
+    {val: 'gauche', text: 'Gauche ⬅️'},
+    {val: 'droite', text: 'Droite ➡️'},
+    {val: 'arrière', text: 'Arrière (Plafond) 🔼'}
+  ];
+
+  function updateDirectionOptions() {
+    const action = document.getElementById('pos-action').value;
+    const currentDir = directionSelect.value;
+    
+    // Vider le select
+    directionSelect.innerHTML = '';
+
+    let allowed = [];
+    
+    // NOUVELLE LOGIQUE
+    if (action === 'profile' || action === 'back_profile') {
+      // Profil : On ne peut pas être de Face
+      // Mais on peut regarder à Gauche, Droite, ou Arrière (Plafond)
+      allowed = ['gauche', 'droite', 'arrière'];
+    } else {
+      // Tête ou Tourner : Tout est permis
+      allowed = ['face', 'gauche', 'droite', 'arrière'];
+    }
+
+    // Reconstruire le select
+    allOptions.forEach(opt => {
+      if (allowed.includes(opt.val)) {
+        const el = document.createElement('option');
+        el.value = opt.val;
+        el.text = opt.text;
+        directionSelect.appendChild(el);
+      }
+    });
+
+    // Essayer de garder la sélection précédente si elle est valide
+    if (allowed.includes(currentDir)) {
+      directionSelect.value = currentDir;
+    } else {
+      directionSelect.value = allowed[0];
+    }
+
+    updatePreview();
   }
 
-  function switchTab(tabId, btn) {
-    document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
-    document.querySelectorAll('.nav-tab').forEach(b => b.classList.remove('active'));
-    document.getElementById(tabId).classList.add('active');
-    btn.classList.add('active');
-  }
-
-  // ==========================================
-  // LOGIQUE POSITIONS
-  // ==========================================
   function updatePreview() {
     const action = document.getElementById('pos-action').value;
     const dir = document.getElementById('pos-dir').value;
     let text = "";
 
-    // Grammaire intelligente
     if (action === "static") {
       text = `Met la tête à ${dir}`;
     } else if (action === "rotate") {
+      // Grammaire pour "Tourne la tête"
       if (dir === "gauche" || dir === "droite") {
         text = `Tourne la tête vers la ${dir}`;
+      } else if (dir === "arrière") {
+        text = `Tourne la tête en arrière (plafond)`;
       } else {
         text = `Tourne la tête ${dir}`;
       }
     } else if (action === "profile") {
       text = `Mets-toi de profil ${dir}`;
     } else if (action === "back_profile") {
-      // Nouvelle logique pour Arrière Profil
       text = `Arrière profil ${dir}`;
     }
 
@@ -433,179 +252,107 @@
   }
 
   function setRandomPos() {
+    const actionSelect = document.getElementById('pos-action');
     const actions = ["static", "rotate", "profile", "back_profile"];
-    const dirs = ["face", "gauche", "droite", "arrière"];
     
-    // Sélection aléatoire
+    // 1. Choisir une action au hasard
     const randAction = actions[Math.floor(Math.random() * actions.length)];
-    const randDir = dirs[Math.floor(Math.random() * dirs.length)];
-
-    // Mise à jour des select
-    document.getElementById('pos-action').value = randAction;
-    document.getElementById('pos-dir').value = randDir;
+    actionSelect.value = randAction;
+    
+    // 2. Mettre à jour les directions possibles pour cette action
+    updateDirectionOptions();
+    
+    // 3. Choisir une direction parmi celles qui restent disponibles
+    const availableDirs = Array.from(directionSelect.options).map(o => o.value);
+    const randDir = availableDirs[Math.floor(Math.random() * availableDirs.length)];
+    directionSelect.value = randDir;
     
     updatePreview();
   }
 
   function sendPosWhatsapp() {
     const text = updatePreview();
-    const url = `https://api.whatsapp.com/send?phone=${WHATSAPP_NUMBER}&text=${encodeURIComponent(text)}`;
-    window.open(url, '_blank');
+    window.open(`https://api.whatsapp.com/send?phone=${WHATSAPP_NUMBER}&text=${encodeURIComponent(text)}`, '_blank');
   }
 
-  // ==========================================
-  // LOGIQUE GENERATEUR DE DEFI (MAITRE)
-  // ==========================================
+  // --- LOGIQUE REPAS ---
   function updateFoodPreview() {
-    // Afficher l'onomatopée dès la sélection pour le maitre
-    const select = document.getElementById('food-select');
-    const val = select.value;
-    document.getElementById('food-preview-ono').innerText = val;
+    document.getElementById('food-preview-ono').innerText = document.getElementById('food-select').value;
   }
 
   function generateFoodChallenge() {
     const select = document.getElementById('food-select');
-    const phrase = select.value;
-    const name = select.selectedOptions[0].text;
-    const reps = document.getElementById('food-reps').value;
-
-    const data = { phrase, reps, name };
-    const jsonStr = JSON.stringify(data);
-    const encoded = base64EncodeUnicode(jsonStr);
-    
-    // Construction du lien
-    const link = `${window.location.origin}${window.location.pathname}?challenge=${encoded}`;
-    
-    // Affichage
+    const data = { phrase: select.value, reps: document.getElementById('food-reps').value, name: select.selectedOptions[0].text };
+    const link = `${window.location.origin}${window.location.pathname}?challenge=${base64EncodeUnicode(JSON.stringify(data))}`;
     document.getElementById('food-link-input').value = link;
     document.getElementById('result-food').classList.remove('hidden');
-    
-    // Scroll vers le résultat
     document.getElementById('result-food').scrollIntoView({behavior: "smooth"});
-  }
-
-  function copyLink() {
-    const copyText = document.getElementById("food-link-input");
-    copyText.select();
-    copyText.setSelectionRange(0, 99999); 
-    navigator.clipboard.writeText(copyText.value);
-    alert("✅ Lien copié !");
   }
 
   function shareFoodWhatsapp() {
     const link = document.getElementById("food-link-input").value;
     const select = document.getElementById('food-select');
-    const name = select.selectedOptions[0].text;
-    const reps = document.getElementById('food-reps').value;
-    const phrase = select.value;
-
-    const msg = `🤡 DÉFI REPAS 🤡\n\n🍽️ Menu: ${name}\n🔄 Répétitions: ${reps} fois\n\nRonan, clique sur le lien et recopie EXACTEMENT les onomatopées ("${phrase}") ${reps} fois. Une erreur et tout s'efface !\n\n👇 LE LIEN DU DÉFI 👇\n${link}`;
-    
+    const msg = `🤡 DÉFI REPAS 🤡\n\n🍽️ Menu: ${select.selectedOptions[0].text}\n🔄 Répétitions: ${document.getElementById('food-reps').value} fois\n\n👇 LE LIEN DU DÉFI 👇\n${link}`;
     window.open(`https://api.whatsapp.com/send?phone=${WHATSAPP_NUMBER}&text=${encodeURIComponent(msg)}`, '_blank');
   }
 
-  // ==========================================
-  // LOGIQUE JEU DE SAISIE (ESCLAVE)
-  // ==========================================
-  let gameState = {
-    target: "",
-    repsTotal: 0,
-    repsDone: 0
-  };
+  // --- LOGIQUE JEU ---
+  let gameState = { target: "", repsTotal: 0, repsDone: 0 };
 
-  function initChallengeMode() {
+  function initChallenge() {
     const params = new URLSearchParams(window.location.search);
     const challengeCode = params.get('challenge');
-
     if (challengeCode) {
       try {
-        // Décoder les données
-        const decoded = base64DecodeUnicode(challengeCode);
-        const data = JSON.parse(decoded);
-
-        // Masquer l'interface maître, afficher le jeu
+        const data = JSON.parse(base64DecodeUnicode(challengeCode));
         document.getElementById('main-interface').classList.add('hidden');
         document.getElementById('challenge-interface').classList.remove('hidden');
-
-        // Configurer le jeu
-        gameState.target = data.phrase;
-        gameState.repsTotal = parseInt(data.reps);
-        gameState.repsDone = 0;
-
+        gameState = { target: data.phrase, repsTotal: parseInt(data.reps), repsDone: 0 };
         document.getElementById('challenge-title').innerText = data.name;
         document.getElementById('challenge-phrase-display').innerText = data.phrase;
-        updateProgress();
-
-        setupInputListener();
-
-      } catch (e) {
-        alert("Lien invalide ou corrompu.");
-        window.location.href = window.location.pathname; // Retour à l'accueil
-      }
+        updateGameProgress();
+        setupGameInput();
+      } catch (e) { alert("Lien invalide"); window.location.href = window.location.pathname; }
     }
   }
 
-  function updateProgress() {
+  function updateGameProgress() {
     document.getElementById('challenge-progress').innerText = `${gameState.repsDone} / ${gameState.repsTotal}`;
   }
 
-  function setupInputListener() {
+  function setupGameInput() {
     const input = document.getElementById('challenge-input');
-    const errorDisplay = document.getElementById('challenge-error');
-    const successDisplay = document.getElementById('challenge-success');
+    const err = document.getElementById('challenge-error');
+    const succ = document.getElementById('challenge-success');
 
-    // Interdire le copier-coller
-    input.addEventListener('paste', (e) => {
-      e.preventDefault();
-      errorDisplay.innerText = "❌ TRICHEUR ! Pas de copier-coller !";
-      setTimeout(() => errorDisplay.innerText = "", 2000);
-    });
-
+    input.addEventListener('paste', e => { e.preventDefault(); err.innerText = "❌ PAS DE COPIER-COLLER !"; setTimeout(()=>err.innerText="", 2000); });
+    
     input.addEventListener('input', function() {
-      const val = this.value;
-      
-      // Cas de succès pour une répétition
-      if (val === gameState.target) {
-        gameState.repsDone++;
-        this.value = ""; // Reset champ
-        updateProgress();
-
-        // Victoire totale ?
+      if (this.value === gameState.target) {
+        gameState.repsDone++; this.value = ""; updateGameProgress();
         if (gameState.repsDone >= gameState.repsTotal) {
-          successDisplay.innerText = "🎉 DÉFI TERMINÉ ! BRAVO LE BOUFFON ! 🎉";
-          this.disabled = true;
-          this.style.background = "#d1fae5";
+          succ.innerText = "🎉 DÉFI RÉUSSI !"; this.disabled = true; this.style.background = "#d1fae5";
         }
-        return;
-      }
-
-      // Vérification caractère par caractère
-      // Si ce qu'on tape ne correspond pas au début de la phrase cible...
-      if (!gameState.target.startsWith(val)) {
-        // ERREUR FATALE
-        this.value = "";
-        gameState.repsDone = 0; // Reset total
-        updateProgress();
-        
-        errorDisplay.innerText = "❌ ERREUR ! TOUT RECOMMENCE À ZÉRO ! 😈";
-        
-        // Animation de secousse
-        this.style.borderColor = "red";
-        setTimeout(() => {
-          this.style.borderColor = "#e5e7eb";
-          errorDisplay.innerText = "";
-        }, 1500);
+      } else if (!gameState.target.startsWith(this.value)) {
+        this.value = ""; gameState.repsDone = 0; updateGameProgress();
+        err.innerText = "❌ ERREUR ! TOUT À ZÉRO !"; this.style.borderColor = "red";
+        setTimeout(() => { this.style.borderColor = "#e5e7eb"; err.innerText = ""; }, 1500);
       }
     });
   }
 
-  // Démarrage
-  window.onload = function() {
-    initChallengeMode();
-    updatePreview(); // Init texte par défaut Positions
-    updateFoodPreview(); // Init texte par défaut Repas
-  };
+  // --- UTILS ---
+  function base64EncodeUnicode(str) { return btoa(encodeURIComponent(str).replace(/%([0-9A-F]{2})/g, (match, p1) => String.fromCharCode('0x' + p1))); }
+  function base64DecodeUnicode(str) { return decodeURIComponent(Array.prototype.map.call(atob(str), c => '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2)).join('')); }
+  function switchTab(id, btn) { document.querySelectorAll('.tab-content, .nav-tab').forEach(e => e.classList.remove('active')); document.getElementById(id).classList.add('active'); btn.classList.add('active'); }
+  function copyLink() { const el = document.getElementById("food-link-input"); el.select(); navigator.clipboard.writeText(el.value); alert("✅ Copié !"); }
 
+  // START
+  window.onload = function() {
+    initChallenge();
+    updateDirectionOptions(); // Init logique filtrage
+    updateFoodPreview();
+  };
 </script>
 </body>
 </html>
